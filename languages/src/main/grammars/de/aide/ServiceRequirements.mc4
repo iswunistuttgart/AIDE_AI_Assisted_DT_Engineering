@@ -1,0 +1,13 @@
+package de.aide;
+
+/* Service requirements of a digital twin: a variant of CD4A whose attributes also state
+   their unit after "in" and whether the service only reads them ({readOnly}). */
+grammar ServiceRequirements extends de.monticore.CD4Analysis, de.aide.DTBasics {
+
+  start CDCompilationUnit;
+
+  /* Attributes with {readOnly} are inputs that the service only reads; all other
+     attributes are outputs that the service may write. */
+  CDAttribute implements CDMember, Field =
+    Modifier MCType Name ("in" UnitRef)? ReadOnly? ("=" initial:Expression)? ";";
+}

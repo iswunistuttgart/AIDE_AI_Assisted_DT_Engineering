@@ -1,0 +1,177 @@
+# AIDE and the digital twin it deploys to. Start with: docker compose up -d --build --wait
+# The LLM steps need GROQ_API_KEY (or AI_PROVIDER=mistral/nvidia and MISTRAL_API_KEY/NVIDIA_API_KEY) in .env; see README.md.
+name: aide
+
+# One OPC UA simulator per example. The backend selects scenarios through generated/runtime/scenario/<example>.
+x-simulator: &simulator
+  image: dt-opcua-simulator:local
+  build: ./opcua_simulator
+  restart: unless-stopped
+
+services:
+  backend:
+    image: dt-backend:local
+    build: {context: ., dockerfile: backend/Dockerfile}
+    container_name: dt-backend
+    ports: ["127.0.0.1:8100:8000"]
+    environment:
+      DT_WORKSPACE: /generated/workspace
+      DT_RUNTIME_DIR: /generated/runtime
+      DT_EXAMPLES_DIR: /examples
+      HA_CONFIG_DIR: /ha-config
+      CAMUNDA_REST_URL: http://orchestration:8080/v2
+      DEFAULT_OPCUA_ENDPOINT: opc.tcp://opcua-robot-cell:4840/robot-cell/
+      AI_PROVIDER: ${AI_PROVIDER:-groq}
+      GROQ_API_KEY: ${GROQ_API_KEY:-}
+      MISTRAL_API_KEY: ${MISTRAL_API_KEY:-}
+      NVIDIA_API_KEY: ${NVIDIA_API_KEY:-}
+      AI_MODEL: ${AI_MODEL:-}
+      AI_TIMEOUT_SECONDS: ${AI_TIMEOUT_SECONDS:-600}
+      AI_MAX_OUTPUT_TOKENS: ${AI_MAX_OUTPUT_TOKENS:-20000}
+    volumes: ["./generated:/generated", "./examples:/examples:ro", "./docker/homeassistant:/ha-config"]
+    healthcheck:
+      test: ["CMD", "python", "-c", "from urllib.request import urlopen; urlopen('http://127.0.0.1:8000/api/health', timeout=4)"]
+      interval: 5s
+      retries: 24
+      start_period: 20s
+    restart: unless-stopped
+    depends_on: {orchestration: {condition: service_healthy}}
+
+  frontend:
+    build: ./frontend
+    container_name: dt-frontend
+    ports: ["127.0.0.1:3100:3000"]
+    environment: {API_PROXY_TARGET: "http://backend:8000"}
+    healthcheck:
+      test: ["CMD", "wget", "-q", "-O", "/dev/null", "http://127.0.0.1:3000/api/health"]
+      interval: 5s
+      retries: 24
+    restart: unless-stopped
+    depends_on: {backend: {condition: service_healthy}}
+
+  adapter:
+    build: ./adapter
+    container_name: dt-adapter
+    environment: {MQTT_PASSWORD_FILE: /run/mqtt-secrets/adapter}
+    volumes: ["./generated/runtime:/runtime", "mqtt_secrets:/run/mqtt-secrets:ro"]
+    restart: unless-stopped
+    depends_on: {mosquitto: {condition: service_healthy}, orchestration: {condition: service_healthy}}
+
+  opcua-robot-cell:
+    <<: *simulator
+    container_name: dt-opcua-robot-cell
+    ports: ["127.0.0.1:4841:4840"]
+    environment:
+      OPCUA_SIMULATOR_ENDPOINT: opc.tcp://0.0.0.0:4840/robot-cell/
+      OPCUA_HEALTHCHECK_ENDPOINT: opc.tcp://127.0.0.1:4840/robot-cell/
+      OPCUA_NODESET_FILE: /model/robot-cell.nodeset.xml
+      OPCUA_SIMULATION_FILE: /model/simulation.json
+      SIM_CONTROL_DIR: /scenario
+    volumes: ["./examples/robot_cell:/model:ro", "./generated/runtime/scenario/robot_cell:/scenario"]
+
+  opcua-milling-machine:
+    <<: *simulator
+    container_name: dt-opcua-milling-machine
+    ports: ["127.0.0.1:4842:4840"]
+    environment:
+      OPCUA_SIMULATOR_ENDPOINT: opc.tcp://0.0.0.0:4840/milling-machine/
+      OPCUA_HEALTHCHECK_ENDPOINT: opc.tcp://127.0.0.1:4840/milling-machine/
+      OPCUA_NODESET_FILE: /model/milling-machine.nodeset.xml
+      OPCUA_SIMULATION_FILE: /model/simulation.json
+      SIM_CONTROL_DIR: /scenario
+    volumes: ["./examples/milling_machine:/model:ro", "./generated/runtime/scenario/milling_machine:/scenario"]
+
+  opcua-yumi:
+    <<: *simulator
+    container_name: dt-opcua-yumi
+    ports: ["127.0.0.1:4843:4840"]
+    environment:
+      OPCUA_SIMULATOR_ENDPOINT: opc.tcp://0.0.0.0:4840/yumi/
+      OPCUA_HEALTHCHECK_ENDPOINT: opc.tcp://127.0.0.1:4840/yumi/
+      OPCUA_NODESET_FILE: /model/yumi-tictactoe.nodeset.xml
+      OPCUA_SIMULATION_FILE: /model/simulation.json
+      SIM_CONTROL_DIR: /scenario
+    volumes: ["./examples/yumi_tictactoe:/model:ro", "./generated/runtime/scenario/yumi_tictactoe:/scenario"]
+
+  # Generates one random password per MQTT account on the first start; the volume keeps them.
+  mqtt-secrets:
+    image: alpine:3.20
+    container_name: dt-mqtt-secrets
+    volumes: ["mqtt_secrets:/secrets"]
+    command:
+      - sh
+      - -c
+      - |
+        for account in homeassistant adapter observer; do
+          file=/secrets/$$account
+          [ -s "$$file" ] || head -c 24 /dev/urandom | od -An -tx1 | tr -d ' \n' > "$$file"
+        done
+        chmod 644 /secrets/*
+    restart: "no"
+
+  mosquitto:
+    image: eclipse-mosquitto:2
+    container_name: dt-mosquitto
+    entrypoint: ["sh", "/aide/start.sh"]
+    ports: ["127.0.0.1:1883:1883"]
+    volumes:
+      - ./docker/mosquitto:/aide:ro
+      - mqtt_secrets:/run/mqtt-secrets:ro
+      - mosquitto_data:/mosquitto/data
+      - mosquitto_log:/mosquitto/log
+    healthcheck:
+      test: ["CMD-SHELL", "mosquitto_sub -h 127.0.0.1 -u observer -P \"$$(cat /run/mqtt-secrets/observer)\" -t '$$SYS/broker/uptime' -C 1 -W 3"]
+      interval: 5s
+      retries: 12
+    restart: unless-stopped
+    depends_on: {mqtt-secrets: {condition: service_completed_successfully}}
+
+  homeassistant:
+    image: ghcr.io/home-assistant/home-assistant:2026.8.1
+    container_name: dt-homeassistant
+    entrypoint: ["python3", "/aide/homeassistant_start.py"]
+    ports: ["127.0.0.1:8123:8123"]
+    volumes:
+      - ./docker/homeassistant:/config
+      - ./docker/homeassistant_start.py:/aide/homeassistant_start.py:ro
+      - mqtt_secrets:/run/mqtt-secrets:ro
+    healthcheck:
+      test: ["CMD", "python3", "-c", "from urllib.request import urlopen; urlopen('http://127.0.0.1:8123/', timeout=4)"]
+      interval: 5s
+      retries: 36
+      start_period: 30s
+    restart: unless-stopped
+    depends_on: {mosquitto: {condition: service_healthy}}
+
+  # Camunda runs as user 1001 and needs to own its data volume.
+  camunda-data-init:
+    image: alpine:3.20
+    container_name: dt-camunda-data-init
+    volumes: ["camunda_data:/data"]
+    command: ["chown", "-R", "1001:1001", "/data"]
+    restart: "no"
+
+  orchestration:
+    image: camunda/camunda:8.9.4
+    container_name: dt-camunda
+    ports: ["127.0.0.1:26500:26500", "127.0.0.1:8180:8080", "127.0.0.1:9600:9600"]
+    mem_limit: 1g
+    volumes:
+      - camunda_runtime:/usr/local/camunda/data
+      - camunda_data:/usr/local/camunda/camunda-data
+      - ./docker/camunda/application-h2.yaml:/usr/local/camunda/config/application.yaml:ro
+    healthcheck:
+      # The image has no curl; bash asks the management port for the health status.
+      test: ["CMD", "bash", "-c", "exec 3<>/dev/tcp/127.0.0.1/9600 && printf 'GET /actuator/health/status HTTP/1.0\\r\\n\\r\\n' >&3 && grep -q UP <&3"]
+      interval: 2s
+      retries: 60
+      start_period: 30s
+    restart: unless-stopped
+    depends_on: {camunda-data-init: {condition: service_completed_successfully}}
+
+volumes:
+  mqtt_secrets:
+  mosquitto_data:
+  mosquitto_log:
+  camunda_data:
+  camunda_runtime:

@@ -1,0 +1,9 @@
+# Only the backend image uses the repository root as build context.
+**
+!backend/requirements.txt
+!backend/app/
+!languages/build.gradle
+!languages/settings.gradle
+!languages/src/
+!languages/prebuilt/dtlang.jar
+**/__pycache__

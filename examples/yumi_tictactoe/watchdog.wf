@@ -1,0 +1,29 @@
+workflow MotorOverheat uses YumiMonitoringBinding covers 1 {
+  start    s      on change motorTemperature -> g1
+  xor      g1     motorTemperature > 80 ? stop : done
+  task     stop   set stop = true -> e1
+  eventgw  e1     motorTemperature < 60 ? resume : after 10 min esc
+  task     resume set restart = true -> done
+  escalate esc    "Axis 3 of YuMi stays above 60 °C; the robot remains stopped"
+  end      done
+}
+
+workflow ErrorState uses YumiMonitoringBinding covers 2 {
+  start    s      on change state -> g1
+  xor      g1     state == "error" ? stop : done
+  task     stop   set stop = true -> ask
+  user     ask    "YuMi reports an error and was stopped. Clear the board and restart it?" yes resume : no done after 5 min -> esc
+  task     resume set restart = true -> clear
+  task     clear  set clear = true -> done
+  escalate esc    "YuMi reported an error; the operator did not decide within 5 minutes"
+  end      done
+}
+
+workflow MoveNotCompleted uses YumiMonitoringBinding covers 3 {
+  start    s      on change state -> g1
+  xor      g1     state == "moving" ? e1 : done
+  eventgw  e1     state != "moving" ? done : after 30 s stop
+  task     stop   set stop = true -> esc
+  escalate esc    "YuMi did not complete its move within 30 s and was stopped"
+  end      done
+}

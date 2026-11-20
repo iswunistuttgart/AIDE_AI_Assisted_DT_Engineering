@@ -1,0 +1,52 @@
+workflow WornTool uses MillingMonitoringBinding covers 1 {
+  start    s      on change remainingLife -> g1
+  xor      g1     remainingLife < 10 ? ask : done
+  user     ask    "Tool life below 10 %. Change to the sister tool 17?" yes swap : no esc after 120 s -> esc
+  task     swap   set changeTo = 17 -> done
+  escalate esc    "A worn tool is still in use"
+  end      done
+}
+
+workflow Chatter uses MillingMonitoringBinding covers 2 {
+  start    s     on change vibration -> g1
+  xor      g1    vibration > 4 ? t1 : done
+  timer    t1    5 s -> g2
+  xor      g2    vibration > 4 ? feed : done
+  decide   feed  set feedOverride from vibration { > 8 : 40; > 6 : 60; else 80 } -> e1
+  eventgw  e1    vibration < 3 ? done : after 60 s stop
+  call     stop  SafeStop -> esc
+  escalate esc   "Chatter not resolved: machine stopped"
+  end      done
+}
+
+workflow RotaryTableHeat uses MillingMonitoringBinding covers 3 {
+  start    s     on change rotaryTableTemperature -> g1
+  xor      g1    rotaryTableTemperature > 70 ? split : done
+  parallel split -> slow, boost
+  task     slow  set feedOverride = 50 -> join
+  task     boost set Coolant.boost = true -> join
+  parallel join  -> e1
+  eventgw  e1    rotaryTableTemperature < 60 ? done : after 120 s stop
+  call     stop  SafeStop -> esc
+  escalate esc   "Rotary table overheating: machine stopped"
+  end      done
+}
+
+workflow CoolantLoss uses MillingMonitoringBinding covers 4 {
+  start    s     on change pressure -> g1
+  xor      g1    pressure < 2 ? t1 : done
+  timer    t1    10 s -> g2
+  xor      g2    pressure < 2 ? stop : done
+  call     stop  SafeStop after 300 s -> late -> esc
+  escalate esc   "Coolant loss: machine stopped"
+  escalate late  "Coolant loss: the operator did not respond to the safe stop"
+  end      done
+}
+
+workflow SafeStop uses MillingMonitoringBinding {
+  start    s     -> hold
+  task     hold  set feedHold = true -> ask
+  user     ask   "Feed hold is active. Abort the NC program?" yes abort : no done
+  task     abort set Program.abort = true -> done
+  end      done
+}

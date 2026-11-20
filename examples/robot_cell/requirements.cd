@@ -1,0 +1,39 @@
+/* Service requirements of the monitoring service for the robot machine-tending cell. */
+classdiagram CellMonitoring {
+
+  class CncMachine {
+    double spindleTemperature in degC {readOnly};
+    double spindleSpeed in rpm {readOnly};
+    boolean startCycle;
+    boolean coolantOn;
+  }
+
+  class Robot {
+    double cycleTime in s {readOnly};
+    double batteryLevel in [%] {readOnly};
+    Pose currentPose {readOnly};
+    double speedOverride in [%];
+    boolean stopMotion;
+    boolean resumeMotion;
+  }
+
+  class Pose {
+    double x in mm;
+    double y in mm;
+    double z in mm;
+  }
+
+  class Conveyor {
+    double motorCurrent in A {readOnly};
+    double targetSpeed in [mm/s];
+    boolean run;
+  }
+
+  class SafetyController {
+    boolean emergencyStop;
+  }
+
+  class Cell {
+    double totalPower in kW {readOnly};
+  }
+}

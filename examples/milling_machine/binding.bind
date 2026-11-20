@@ -1,0 +1,21 @@
+binding MillingMonitoringBinding for MillingMonitoring, MillingMachineNodeSet {
+  Spindle.temperature -> "ns=1;s=MillingMachine/Monitoring/Spindle/BearingTemperature" convert K to degC;
+  Spindle.speed -> "ns=1;s=MillingMachine/Monitoring/Spindle/ActualSpeed" widen Int32 to double;
+  Spindle.load -> "ns=1;s=MillingMachine/Monitoring/Spindle/Load";
+  Spindle.vibration -> "ns=1;s=MillingMachine/Monitoring/Spindle/Vibration";
+  Kinematics.position.x -> "ns=1;s=MillingMachine/Monitoring/Axes/X/ActualPosition";
+  Kinematics.position.y -> "ns=1;s=MillingMachine/Monitoring/Axes/Y/ActualPosition";
+  Kinematics.position.z -> "ns=1;s=MillingMachine/Monitoring/Axes/Z/ActualPosition";
+  Kinematics.position.a -> "ns=1;s=MillingMachine/Monitoring/Axes/A/ActualPosition";
+  Kinematics.position.c -> "ns=1;s=MillingMachine/Monitoring/Axes/C/ActualPosition";
+  Kinematics.rotaryTableTemperature -> "ns=1;s=MillingMachine/Monitoring/Axes/C/MotorTemperature";
+  Program.name -> "ns=1;s=MillingMachine/Production/ActiveProgram/Name";
+  Program.feedOverride -> "ns=1;s=MillingMachine/Monitoring/MachineTool/FeedOverride";
+  Program.feedHold -> "ns=1;s=MillingMachine/Production/ActiveProgram/FeedHold" map true -> call confirmed;
+  Program.abort -> "ns=1;s=MillingMachine/Production/ActiveProgram/Abort" map true -> call confirmed;
+  Tool.number -> "ns=1;s=MillingMachine/Equipment/Tools/ActiveToolNumber";
+  Tool.remainingLife -> "ns=1;s=MillingMachine/Equipment/Tools/RemainingToolLife";
+  Tool.changeTo -> "ns=1;s=MillingMachine/Equipment/Tools/ChangeTool" via method;
+  Coolant.pressure -> "ns=1;s=MillingMachine/Monitoring/Coolant/Pressure";
+  Coolant.boost -> "ns=1;s=MillingMachine/Monitoring/Coolant/BoostOn";
+}

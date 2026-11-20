@@ -1,0 +1,6 @@
+default_config:
+
+# Deployment writes dt-dashboard.yaml; Home Assistant shows it at /digital-twin.
+lovelace:
+  dashboards:
+    digital-twin: {mode: yaml, filename: dt-dashboard.yaml, title: Digital Twin, icon: "mdi:factory", show_in_sidebar: true}

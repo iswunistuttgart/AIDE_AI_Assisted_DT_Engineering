@@ -1,0 +1,47 @@
+workflow SpindleOverheat uses CellMonitoringBinding covers 1 {
+  start    s     on change spindleTemperature -> g1
+  xor      g1    spindleTemperature > 80 ? t1 : done
+  timer    t1    30 s -> g2
+  xor      g2    spindleTemperature > 80 ? slow : done
+  decide   slow  set targetSpeed from spindleTemperature { > 95 : 30; > 85 : 60; else 90 } -> e1
+  eventgw  e1    spindleTemperature < 70 ? done : after 120 s ask
+  user     ask   "Spindle still above 70 °C. Trigger the emergency stop?" yes stop : no esc after 60 s -> stop
+  task     stop  set emergencyStop = true -> esc
+  escalate esc   "Spindle overheating not resolved: inform the shift supervisor"
+  end      done
+}
+
+workflow ConveyorJam uses CellMonitoringBinding covers 2 {
+  start    s     on change motorCurrent -> g1
+  xor      g1    motorCurrent > 8 ? t1 : done
+  timer    t1    5 s -> g2
+  xor      g2    motorCurrent > 8 ? split : done
+  parallel split -> stop, tell
+  task     stop  set Conveyor.run = false -> join
+  signal   tell  "conveyor jammed" -> join
+  parallel join -> e1
+  eventgw  e1    motorCurrent < 1 ? done : after 10 s esc
+  escalate esc   "Conveyor jam not cleared"
+  end      done
+}
+
+workflow RobotWaits uses CellMonitoringBinding covers 3 {
+  start    s      on signal "conveyor jammed" -> slow
+  task     slow   set speedOverride = 10 -> e1
+  eventgw  e1     motorCurrent > 1 and motorCurrent < 8 ? resume : after 300 s ask
+  task     resume set speedOverride = 100 -> done
+  user     ask    "The conveyor is still stopped. Stop the robot motion?" yes stop : no done
+  task     stop   set stopMotion = true -> done
+  end      done
+}
+
+workflow AxisOverheat uses CellMonitoringBinding covers 4 {
+  requires double motorTemperature in degC {readOnly};
+  start     s    every 1 min -> g1
+  inclusive g1   motorTemperature > 80 ? slow, motorTemperature > 90 ? ask : join
+  task      slow set speedOverride = 50 -> join
+  user      ask  "Robot motor above 90 °C. Stop the robot motion?" yes stop : no join after 60 s -> join
+  task      stop set stopMotion = true -> join
+  inclusive join -> done
+  end       done
+}

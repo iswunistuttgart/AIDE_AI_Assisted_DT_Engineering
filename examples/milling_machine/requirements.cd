@@ -1,0 +1,41 @@
+/* Service requirements of the process monitoring service for a 5-axis milling machine. */
+classdiagram MillingMonitoring {
+
+  class Spindle {
+    double temperature in degC {readOnly};
+    double speed in rpm {readOnly};
+    double load in [%] {readOnly};
+    double vibration in [mm/s] {readOnly};
+  }
+
+  class Kinematics {
+    Position position {readOnly};
+    double rotaryTableTemperature in degC {readOnly};
+  }
+
+  class Position {
+    double x in mm;
+    double y in mm;
+    double z in mm;
+    double a in deg;
+    double c in deg;
+  }
+
+  class Program {
+    String name {readOnly};
+    double feedOverride in [%];
+    boolean feedHold;
+    boolean abort;
+  }
+
+  class Tool {
+    int number {readOnly};
+    double remainingLife in [%] {readOnly};
+    int changeTo;
+  }
+
+  class Coolant {
+    double pressure in bar {readOnly};
+    boolean boost;
+  }
+}

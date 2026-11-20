@@ -1,0 +1,4 @@
+# Home Assistant keeps its state here; only the configuration is versioned.
+*
+!.gitignore
+!configuration.yaml

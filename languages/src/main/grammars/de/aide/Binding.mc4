@@ -1,0 +1,29 @@
+package de.aide;
+
+/* Binding specification from required attributes to OPC UA nodes. */
+grammar Binding extends de.aide.DTBasics {
+
+  BindingSpec = "binding" Name "for" requirements:Name "," nodeSet:Name
+    "{" (BindingEntry | UnboundEntry)* "}";
+
+  BindingEntry = AttributeRef "->" nodeId:StringLiteral Conversion* ";";
+
+  /* Only the engineer marks an attribute as unbound when no node can provide it, for example
+     because the machine offers the value only through a getter method; the reason says why. */
+  UnboundEntry = AttributeRef "unbound" reason:StringLiteral? ";";
+
+  interface Conversion;
+
+  UnitConversion implements Conversion = "convert" source:UnitRef "to" target:UnitRef;
+
+  TypeConversion implements Conversion = "widen" source:Name "to" target:Name;
+
+  /* The output is written as the single argument of a method. */
+  MethodCall implements Conversion = "via" "method";
+
+  /* Only the engineer adds a value mapping and confirms it: a Boolean maps to integers,
+     or one Boolean value calls a method without argument. */
+  ValueMapping implements Conversion = "map" (ValuePair || ",")+ confirmed:["confirmed"]?;
+
+  ValuePair = BooleanLiteral "->" (SignedNatLiteral | call:["call"]);
+}

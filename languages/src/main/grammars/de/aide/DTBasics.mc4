@@ -1,0 +1,16 @@
+package de.aide;
+
+/* Elements shared by the requirements, binding and watchdog languages. */
+component grammar DTBasics extends de.monticore.literals.MCCommonLiterals {
+
+  /* A qualified attribute such as Robot.currentPose.x. */
+  AttributeRef = (Name || ".")+;
+
+  /* A unit symbol such as mK, or a bracketed unit such as [mm/s]. */
+  UnitRef = Name | UnitLiteral;
+
+  token UnitLiteral = '[' (~(']' | '\n' | '\r'))+ ']';
+
+  /* Marks an attribute that the service or watchdog only reads. */
+  ReadOnly = "{" "readOnly" "}";
+}

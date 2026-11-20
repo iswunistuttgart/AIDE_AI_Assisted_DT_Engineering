@@ -1,0 +1,282 @@
+<?xml version="1.0" encoding="utf-8"?>
+<UANodeSet xmlns="http://opcfoundation.org/UA/2011/03/UANodeSet.xsd" xmlns:uax="http://opcfoundation.org/UA/2008/02/Types.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" LastModified="2026-11-08T00:00:00Z">
+  <NamespaceUris>
+    <Uri>urn:aide:yumi-tictactoe</Uri>
+  </NamespaceUris>
+  <Models>
+    <Model ModelUri="urn:aide:yumi-tictactoe" Version="2.0.0" PublicationDate="2026-11-08T00:00:00Z">
+      <RequiredModel ModelUri="http://opcfoundation.org/UA/" Version="1.04.0" PublicationDate="2019-05-01T00:00:00Z" />
+    </Model>
+  </Models>
+  <Aliases>
+    <Alias Alias="Int32">i=6</Alias>
+    <Alias Alias="Double">i=11</Alias>
+    <Alias Alias="String">i=12</Alias>
+    <Alias Alias="EUInformation">i=887</Alias>
+    <Alias Alias="Argument">i=296</Alias>
+    <Alias Alias="HasComponent">i=47</Alias>
+    <Alias Alias="HasProperty">i=46</Alias>
+    <Alias Alias="HasTypeDefinition">i=40</Alias>
+    <Alias Alias="Organizes">i=35</Alias>
+  </Aliases>
+  <UAObject NodeId="ns=1;s=YuMi" BrowseName="1:YuMi">
+    <DisplayName>YuMi</DisplayName>
+    <Description>ABB YuMi robot arm that plays tic-tac-toe on a physical board with cells 1 to 9, numbered row by row from the top left</Description>
+    <References>
+      <Reference ReferenceType="Organizes" IsForward="false">i=85</Reference>
+      <Reference ReferenceType="HasTypeDefinition">i=58</Reference>
+    </References>
+  </UAObject>
+  <UAVariable NodeId="ns=1;s=YuMi/State" BrowseName="1:State" ParentNodeId="ns=1;s=YuMi" DataType="String" AccessLevel="1" UserAccessLevel="1">
+    <DisplayName>State</DisplayName>
+    <Description>Robot state that the controller reports: idle, moving while it executes a move, stopped after Stop, or error</Description>
+    <References>
+      <Reference ReferenceType="HasComponent" IsForward="false">ns=1;s=YuMi</Reference>
+      <Reference ReferenceType="HasTypeDefinition">i=63</Reference>
+    </References>
+    <Value><uax:String>idle</uax:String></Value>
+  </UAVariable>
+  <UAObject NodeId="ns=1;s=YuMi/Axis1" BrowseName="1:Axis1" ParentNodeId="ns=1;s=YuMi">
+    <DisplayName>Axis1</DisplayName>
+    <Description>Axis 1 of the arm (shoulder rotation)</Description>
+    <References>
+      <Reference ReferenceType="HasComponent" IsForward="false">ns=1;s=YuMi</Reference>
+      <Reference ReferenceType="HasTypeDefinition">i=58</Reference>
+    </References>
+  </UAObject>
+  <UAVariable NodeId="ns=1;s=YuMi/Axis1/MotorTemperature" BrowseName="1:MotorTemperature" ParentNodeId="ns=1;s=YuMi/Axis1" DataType="Double" AccessLevel="1" UserAccessLevel="1">
+    <DisplayName>MotorTemperature</DisplayName>
+    <Description>Motor temperature of axis 1 (shoulder rotation)</Description>
+    <References>
+      <Reference ReferenceType="HasComponent" IsForward="false">ns=1;s=YuMi/Axis1</Reference>
+      <Reference ReferenceType="HasTypeDefinition">i=2368</Reference>
+      <Reference ReferenceType="HasProperty">ns=1;s=YuMi/Axis1/MotorTemperature/EngineeringUnits</Reference>
+    </References>
+    <Value><uax:Double>38.5</uax:Double></Value>
+  </UAVariable>
+  <UAVariable NodeId="ns=1;s=YuMi/Axis1/MotorTemperature/EngineeringUnits" BrowseName="EngineeringUnits" ParentNodeId="ns=1;s=YuMi/Axis1/MotorTemperature" DataType="EUInformation">
+    <DisplayName>EngineeringUnits</DisplayName>
+    <References>
+      <Reference ReferenceType="HasProperty" IsForward="false">ns=1;s=YuMi/Axis1/MotorTemperature</Reference>
+      <Reference ReferenceType="HasTypeDefinition">i=68</Reference>
+    </References>
+    <Value><uax:ExtensionObject><uax:TypeId><uax:Identifier>i=888</uax:Identifier></uax:TypeId><uax:Body><uax:EUInformation><uax:NamespaceUri>http://www.opcfoundation.org/UA/units/un/cefact</uax:NamespaceUri><uax:UnitId>4408652</uax:UnitId><uax:DisplayName><uax:Locale>en</uax:Locale><uax:Text>°C</uax:Text></uax:DisplayName><uax:Description><uax:Locale>en</uax:Locale><uax:Text>degree Celsius</uax:Text></uax:Description></uax:EUInformation></uax:Body></uax:ExtensionObject></Value>
+  </UAVariable>
+  <UAObject NodeId="ns=1;s=YuMi/Axis2" BrowseName="1:Axis2" ParentNodeId="ns=1;s=YuMi">
+    <DisplayName>Axis2</DisplayName>
+    <Description>Axis 2 of the arm (shoulder bend)</Description>
+    <References>
+      <Reference ReferenceType="HasComponent" IsForward="false">ns=1;s=YuMi</Reference>
+      <Reference ReferenceType="HasTypeDefinition">i=58</Reference>
+    </References>
+  </UAObject>
+  <UAVariable NodeId="ns=1;s=YuMi/Axis2/MotorTemperature" BrowseName="1:MotorTemperature" ParentNodeId="ns=1;s=YuMi/Axis2" DataType="Double" AccessLevel="1" UserAccessLevel="1">
+    <DisplayName>MotorTemperature</DisplayName>
+    <Description>Motor temperature of axis 2 (shoulder bend)</Description>
+    <References>
+      <Reference ReferenceType="HasComponent" IsForward="false">ns=1;s=YuMi/Axis2</Reference>
+      <Reference ReferenceType="HasTypeDefinition">i=2368</Reference>
+      <Reference ReferenceType="HasProperty">ns=1;s=YuMi/Axis2/MotorTemperature/EngineeringUnits</Reference>
+    </References>
+    <Value><uax:Double>41.0</uax:Double></Value>
+  </UAVariable>
+  <UAVariable NodeId="ns=1;s=YuMi/Axis2/MotorTemperature/EngineeringUnits" BrowseName="EngineeringUnits" ParentNodeId="ns=1;s=YuMi/Axis2/MotorTemperature" DataType="EUInformation">
+    <DisplayName>EngineeringUnits</DisplayName>
+    <References>
+      <Reference ReferenceType="HasProperty" IsForward="false">ns=1;s=YuMi/Axis2/MotorTemperature</Reference>
+      <Reference ReferenceType="HasTypeDefinition">i=68</Reference>
+    </References>
+    <Value><uax:ExtensionObject><uax:TypeId><uax:Identifier>i=888</uax:Identifier></uax:TypeId><uax:Body><uax:EUInformation><uax:NamespaceUri>http://www.opcfoundation.org/UA/units/un/cefact</uax:NamespaceUri><uax:UnitId>4408652</uax:UnitId><uax:DisplayName><uax:Locale>en</uax:Locale><uax:Text>°C</uax:Text></uax:DisplayName><uax:Description><uax:Locale>en</uax:Locale><uax:Text>degree Celsius</uax:Text></uax:Description></uax:EUInformation></uax:Body></uax:ExtensionObject></Value>
+  </UAVariable>
+  <UAObject NodeId="ns=1;s=YuMi/Axis3" BrowseName="1:Axis3" ParentNodeId="ns=1;s=YuMi">
+    <DisplayName>Axis3</DisplayName>
+    <Description>Axis 3 of the arm (elbow bend)</Description>
+    <References>
+      <Reference ReferenceType="HasComponent" IsForward="false">ns=1;s=YuMi</Reference>
+      <Reference ReferenceType="HasTypeDefinition">i=58</Reference>
+    </References>
+  </UAObject>
+  <UAVariable NodeId="ns=1;s=YuMi/Axis3/MotorTemperature" BrowseName="1:MotorTemperature" ParentNodeId="ns=1;s=YuMi/Axis3" DataType="Double" AccessLevel="1" UserAccessLevel="1">
+    <DisplayName>MotorTemperature</DisplayName>
+    <Description>Motor temperature of axis 3 (elbow bend)</Description>
+    <References>
+      <Reference ReferenceType="HasComponent" IsForward="false">ns=1;s=YuMi/Axis3</Reference>
+      <Reference ReferenceType="HasTypeDefinition">i=2368</Reference>
+      <Reference ReferenceType="HasProperty">ns=1;s=YuMi/Axis3/MotorTemperature/EngineeringUnits</Reference>
+    </References>
+    <Value><uax:Double>42.0</uax:Double></Value>
+  </UAVariable>
+  <UAVariable NodeId="ns=1;s=YuMi/Axis3/MotorTemperature/EngineeringUnits" BrowseName="EngineeringUnits" ParentNodeId="ns=1;s=YuMi/Axis3/MotorTemperature" DataType="EUInformation">
+    <DisplayName>EngineeringUnits</DisplayName>
+    <References>
+      <Reference ReferenceType="HasProperty" IsForward="false">ns=1;s=YuMi/Axis3/MotorTemperature</Reference>
+      <Reference ReferenceType="HasTypeDefinition">i=68</Reference>
+    </References>
+    <Value><uax:ExtensionObject><uax:TypeId><uax:Identifier>i=888</uax:Identifier></uax:TypeId><uax:Body><uax:EUInformation><uax:NamespaceUri>http://www.opcfoundation.org/UA/units/un/cefact</uax:NamespaceUri><uax:UnitId>4408652</uax:UnitId><uax:DisplayName><uax:Locale>en</uax:Locale><uax:Text>°C</uax:Text></uax:DisplayName><uax:Description><uax:Locale>en</uax:Locale><uax:Text>degree Celsius</uax:Text></uax:Description></uax:EUInformation></uax:Body></uax:ExtensionObject></Value>
+  </UAVariable>
+  <UAObject NodeId="ns=1;s=YuMi/Axis4" BrowseName="1:Axis4" ParentNodeId="ns=1;s=YuMi">
+    <DisplayName>Axis4</DisplayName>
+    <Description>Axis 4 of the arm (forearm rotation)</Description>
+    <References>
+      <Reference ReferenceType="HasComponent" IsForward="false">ns=1;s=YuMi</Reference>
+      <Reference ReferenceType="HasTypeDefinition">i=58</Reference>
+    </References>
+  </UAObject>
+  <UAVariable NodeId="ns=1;s=YuMi/Axis4/MotorTemperature" BrowseName="1:MotorTemperature" ParentNodeId="ns=1;s=YuMi/Axis4" DataType="Double" AccessLevel="1" UserAccessLevel="1">
+    <DisplayName>MotorTemperature</DisplayName>
+    <Description>Motor temperature of axis 4 (forearm rotation)</Description>
+    <References>
+      <Reference ReferenceType="HasComponent" IsForward="false">ns=1;s=YuMi/Axis4</Reference>
+      <Reference ReferenceType="HasTypeDefinition">i=2368</Reference>
+      <Reference ReferenceType="HasProperty">ns=1;s=YuMi/Axis4/MotorTemperature/EngineeringUnits</Reference>
+    </References>
+    <Value><uax:Double>36.5</uax:Double></Value>
+  </UAVariable>
+  <UAVariable NodeId="ns=1;s=YuMi/Axis4/MotorTemperature/EngineeringUnits" BrowseName="EngineeringUnits" ParentNodeId="ns=1;s=YuMi/Axis4/MotorTemperature" DataType="EUInformation">
+    <DisplayName>EngineeringUnits</DisplayName>
+    <References>
+      <Reference ReferenceType="HasProperty" IsForward="false">ns=1;s=YuMi/Axis4/MotorTemperature</Reference>
+      <Reference ReferenceType="HasTypeDefinition">i=68</Reference>
+    </References>
+    <Value><uax:ExtensionObject><uax:TypeId><uax:Identifier>i=888</uax:Identifier></uax:TypeId><uax:Body><uax:EUInformation><uax:NamespaceUri>http://www.opcfoundation.org/UA/units/un/cefact</uax:NamespaceUri><uax:UnitId>4408652</uax:UnitId><uax:DisplayName><uax:Locale>en</uax:Locale><uax:Text>°C</uax:Text></uax:DisplayName><uax:Description><uax:Locale>en</uax:Locale><uax:Text>degree Celsius</uax:Text></uax:Description></uax:EUInformation></uax:Body></uax:ExtensionObject></Value>
+  </UAVariable>
+  <UAObject NodeId="ns=1;s=YuMi/Axis5" BrowseName="1:Axis5" ParentNodeId="ns=1;s=YuMi">
+    <DisplayName>Axis5</DisplayName>
+    <Description>Axis 5 of the arm (wrist bend)</Description>
+    <References>
+      <Reference ReferenceType="HasComponent" IsForward="false">ns=1;s=YuMi</Reference>
+      <Reference ReferenceType="HasTypeDefinition">i=58</Reference>
+    </References>
+  </UAObject>
+  <UAVariable NodeId="ns=1;s=YuMi/Axis5/MotorTemperature" BrowseName="1:MotorTemperature" ParentNodeId="ns=1;s=YuMi/Axis5" DataType="Double" AccessLevel="1" UserAccessLevel="1">
+    <DisplayName>MotorTemperature</DisplayName>
+    <Description>Motor temperature of axis 5 (wrist bend)</Description>
+    <References>
+      <Reference ReferenceType="HasComponent" IsForward="false">ns=1;s=YuMi/Axis5</Reference>
+      <Reference ReferenceType="HasTypeDefinition">i=2368</Reference>
+      <Reference ReferenceType="HasProperty">ns=1;s=YuMi/Axis5/MotorTemperature/EngineeringUnits</Reference>
+    </References>
+    <Value><uax:Double>35.0</uax:Double></Value>
+  </UAVariable>
+  <UAVariable NodeId="ns=1;s=YuMi/Axis5/MotorTemperature/EngineeringUnits" BrowseName="EngineeringUnits" ParentNodeId="ns=1;s=YuMi/Axis5/MotorTemperature" DataType="EUInformation">
+    <DisplayName>EngineeringUnits</DisplayName>
+    <References>
+      <Reference ReferenceType="HasProperty" IsForward="false">ns=1;s=YuMi/Axis5/MotorTemperature</Reference>
+      <Reference ReferenceType="HasTypeDefinition">i=68</Reference>
+    </References>
+    <Value><uax:ExtensionObject><uax:TypeId><uax:Identifier>i=888</uax:Identifier></uax:TypeId><uax:Body><uax:EUInformation><uax:NamespaceUri>http://www.opcfoundation.org/UA/units/un/cefact</uax:NamespaceUri><uax:UnitId>4408652</uax:UnitId><uax:DisplayName><uax:Locale>en</uax:Locale><uax:Text>°C</uax:Text></uax:DisplayName><uax:Description><uax:Locale>en</uax:Locale><uax:Text>degree Celsius</uax:Text></uax:Description></uax:EUInformation></uax:Body></uax:ExtensionObject></Value>
+  </UAVariable>
+  <UAObject NodeId="ns=1;s=YuMi/Axis6" BrowseName="1:Axis6" ParentNodeId="ns=1;s=YuMi">
+    <DisplayName>Axis6</DisplayName>
+    <Description>Axis 6 of the arm (flange rotation)</Description>
+    <References>
+      <Reference ReferenceType="HasComponent" IsForward="false">ns=1;s=YuMi</Reference>
+      <Reference ReferenceType="HasTypeDefinition">i=58</Reference>
+    </References>
+  </UAObject>
+  <UAVariable NodeId="ns=1;s=YuMi/Axis6/MotorTemperature" BrowseName="1:MotorTemperature" ParentNodeId="ns=1;s=YuMi/Axis6" DataType="Double" AccessLevel="1" UserAccessLevel="1">
+    <DisplayName>MotorTemperature</DisplayName>
+    <Description>Motor temperature of axis 6 (flange rotation)</Description>
+    <References>
+      <Reference ReferenceType="HasComponent" IsForward="false">ns=1;s=YuMi/Axis6</Reference>
+      <Reference ReferenceType="HasTypeDefinition">i=2368</Reference>
+      <Reference ReferenceType="HasProperty">ns=1;s=YuMi/Axis6/MotorTemperature/EngineeringUnits</Reference>
+    </References>
+    <Value><uax:Double>34.5</uax:Double></Value>
+  </UAVariable>
+  <UAVariable NodeId="ns=1;s=YuMi/Axis6/MotorTemperature/EngineeringUnits" BrowseName="EngineeringUnits" ParentNodeId="ns=1;s=YuMi/Axis6/MotorTemperature" DataType="EUInformation">
+    <DisplayName>EngineeringUnits</DisplayName>
+    <References>
+      <Reference ReferenceType="HasProperty" IsForward="false">ns=1;s=YuMi/Axis6/MotorTemperature</Reference>
+      <Reference ReferenceType="HasTypeDefinition">i=68</Reference>
+    </References>
+    <Value><uax:ExtensionObject><uax:TypeId><uax:Identifier>i=888</uax:Identifier></uax:TypeId><uax:Body><uax:EUInformation><uax:NamespaceUri>http://www.opcfoundation.org/UA/units/un/cefact</uax:NamespaceUri><uax:UnitId>4408652</uax:UnitId><uax:DisplayName><uax:Locale>en</uax:Locale><uax:Text>°C</uax:Text></uax:DisplayName><uax:Description><uax:Locale>en</uax:Locale><uax:Text>degree Celsius</uax:Text></uax:Description></uax:EUInformation></uax:Body></uax:ExtensionObject></Value>
+  </UAVariable>
+  <UAObject NodeId="ns=1;s=YuMi/Axis7" BrowseName="1:Axis7" ParentNodeId="ns=1;s=YuMi">
+    <DisplayName>Axis7</DisplayName>
+    <Description>Axis 7 of the arm (upper arm rotation, between axes 2 and 3)</Description>
+    <References>
+      <Reference ReferenceType="HasComponent" IsForward="false">ns=1;s=YuMi</Reference>
+      <Reference ReferenceType="HasTypeDefinition">i=58</Reference>
+    </References>
+  </UAObject>
+  <UAVariable NodeId="ns=1;s=YuMi/Axis7/MotorTemperature" BrowseName="1:MotorTemperature" ParentNodeId="ns=1;s=YuMi/Axis7" DataType="Double" AccessLevel="1" UserAccessLevel="1">
+    <DisplayName>MotorTemperature</DisplayName>
+    <Description>Motor temperature of axis 7 (upper arm rotation, between axes 2 and 3)</Description>
+    <References>
+      <Reference ReferenceType="HasComponent" IsForward="false">ns=1;s=YuMi/Axis7</Reference>
+      <Reference ReferenceType="HasTypeDefinition">i=2368</Reference>
+      <Reference ReferenceType="HasProperty">ns=1;s=YuMi/Axis7/MotorTemperature/EngineeringUnits</Reference>
+    </References>
+    <Value><uax:Double>39.5</uax:Double></Value>
+  </UAVariable>
+  <UAVariable NodeId="ns=1;s=YuMi/Axis7/MotorTemperature/EngineeringUnits" BrowseName="EngineeringUnits" ParentNodeId="ns=1;s=YuMi/Axis7/MotorTemperature" DataType="EUInformation">
+    <DisplayName>EngineeringUnits</DisplayName>
+    <References>
+      <Reference ReferenceType="HasProperty" IsForward="false">ns=1;s=YuMi/Axis7/MotorTemperature</Reference>
+      <Reference ReferenceType="HasTypeDefinition">i=68</Reference>
+    </References>
+    <Value><uax:ExtensionObject><uax:TypeId><uax:Identifier>i=888</uax:Identifier></uax:TypeId><uax:Body><uax:EUInformation><uax:NamespaceUri>http://www.opcfoundation.org/UA/units/un/cefact</uax:NamespaceUri><uax:UnitId>4408652</uax:UnitId><uax:DisplayName><uax:Locale>en</uax:Locale><uax:Text>°C</uax:Text></uax:DisplayName><uax:Description><uax:Locale>en</uax:Locale><uax:Text>degree Celsius</uax:Text></uax:Description></uax:EUInformation></uax:Body></uax:ExtensionObject></Value>
+  </UAVariable>
+  <UAMethod NodeId="ns=1;s=YuMi/PlaceX" BrowseName="1:PlaceX" ParentNodeId="ns=1;s=YuMi">
+    <DisplayName>PlaceX</DisplayName>
+    <Description>Picks an X piece and places it on the given cell of the board (1 to 9)</Description>
+    <References>
+      <Reference ReferenceType="HasComponent" IsForward="false">ns=1;s=YuMi</Reference>
+      <Reference ReferenceType="HasProperty">ns=1;s=YuMi/PlaceX/InputArguments</Reference>
+    </References>
+  </UAMethod>
+  <UAVariable NodeId="ns=1;s=YuMi/PlaceX/InputArguments" BrowseName="InputArguments" ParentNodeId="ns=1;s=YuMi/PlaceX" DataType="Argument" ValueRank="1" ArrayDimensions="1">
+    <DisplayName>InputArguments</DisplayName>
+    <References>
+      <Reference ReferenceType="HasProperty" IsForward="false">ns=1;s=YuMi/PlaceX</Reference>
+      <Reference ReferenceType="HasTypeDefinition">i=68</Reference>
+    </References>
+    <Value>
+      <uax:ListOfExtensionObject>
+        <uax:ExtensionObject><uax:TypeId><uax:Identifier>i=297</uax:Identifier></uax:TypeId><uax:Body><uax:Argument><uax:Name>cell</uax:Name><uax:DataType><uax:Identifier>i=6</uax:Identifier></uax:DataType><uax:ValueRank>-1</uax:ValueRank><uax:ArrayDimensions /><uax:Description /></uax:Argument></uax:Body></uax:ExtensionObject>
+      </uax:ListOfExtensionObject>
+    </Value>
+  </UAVariable>
+  <UAMethod NodeId="ns=1;s=YuMi/PlaceO" BrowseName="1:PlaceO" ParentNodeId="ns=1;s=YuMi">
+    <DisplayName>PlaceO</DisplayName>
+    <Description>Picks an O piece and places it on the given cell of the board (1 to 9)</Description>
+    <References>
+      <Reference ReferenceType="HasComponent" IsForward="false">ns=1;s=YuMi</Reference>
+      <Reference ReferenceType="HasProperty">ns=1;s=YuMi/PlaceO/InputArguments</Reference>
+    </References>
+  </UAMethod>
+  <UAVariable NodeId="ns=1;s=YuMi/PlaceO/InputArguments" BrowseName="InputArguments" ParentNodeId="ns=1;s=YuMi/PlaceO" DataType="Argument" ValueRank="1" ArrayDimensions="1">
+    <DisplayName>InputArguments</DisplayName>
+    <References>
+      <Reference ReferenceType="HasProperty" IsForward="false">ns=1;s=YuMi/PlaceO</Reference>
+      <Reference ReferenceType="HasTypeDefinition">i=68</Reference>
+    </References>
+    <Value>
+      <uax:ListOfExtensionObject>
+        <uax:ExtensionObject><uax:TypeId><uax:Identifier>i=297</uax:Identifier></uax:TypeId><uax:Body><uax:Argument><uax:Name>cell</uax:Name><uax:DataType><uax:Identifier>i=6</uax:Identifier></uax:DataType><uax:ValueRank>-1</uax:ValueRank><uax:ArrayDimensions /><uax:Description /></uax:Argument></uax:Body></uax:ExtensionObject>
+      </uax:ListOfExtensionObject>
+    </Value>
+  </UAVariable>
+  <UAMethod NodeId="ns=1;s=YuMi/ClearBoard" BrowseName="1:ClearBoard" ParentNodeId="ns=1;s=YuMi">
+    <DisplayName>ClearBoard</DisplayName>
+    <Description>Removes all pieces from the board and puts them back into the magazines</Description>
+    <References>
+      <Reference ReferenceType="HasComponent" IsForward="false">ns=1;s=YuMi</Reference>
+    </References>
+  </UAMethod>
+  <UAMethod NodeId="ns=1;s=YuMi/Stop" BrowseName="1:Stop" ParentNodeId="ns=1;s=YuMi">
+    <DisplayName>Stop</DisplayName>
+    <Description>Stops the robot program and all motion</Description>
+    <References>
+      <Reference ReferenceType="HasComponent" IsForward="false">ns=1;s=YuMi</Reference>
+    </References>
+  </UAMethod>
+  <UAMethod NodeId="ns=1;s=YuMi/Start" BrowseName="1:Start" ParentNodeId="ns=1;s=YuMi">
+    <DisplayName>Start</DisplayName>
+    <Description>Resumes the robot program; only possible after Stop</Description>
+    <References>
+      <Reference ReferenceType="HasComponent" IsForward="false">ns=1;s=YuMi</Reference>
+    </References>
+  </UAMethod>
+</UANodeSet>

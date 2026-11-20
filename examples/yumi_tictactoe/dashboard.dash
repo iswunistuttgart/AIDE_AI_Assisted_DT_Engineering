@@ -1,0 +1,14 @@
+dashboard YumiDashboard uses YumiMonitoringBinding {
+  view "YuMi" {
+    gauge motorTemperature min 20 max 100 severity 60, 80;
+    history motorTemperature over 1 h;
+    tile state;
+    input nextX min 1 max 9 confirm "Place an X on this cell?";
+    input nextO min 1 max 9 confirm "Place an O on this cell?";
+    button clear confirm "Clear the board?";
+    button stop confirm "Stop the robot?";
+    button restart confirm "Restart the robot?" when state == "stopped";
+    alarm MotorOverheat;
+    alarm MoveNotCompleted;
+  }
+}

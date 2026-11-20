@@ -1,0 +1,17 @@
+# Single-node Camunda 8 for the local stack: H2 as secondary storage, a demo login for the web apps
+# and an unprotected REST API for the backend and the adapter inside the compose network.
+camunda.system.cpu-thread-count: 3
+camunda.system.io-thread-count: 3
+camunda.backup.webapps.enabled: false
+
+camunda.security.authentication.method: basic
+camunda.security.authentication.unprotected-api: true
+camunda.security.authorizations.enabled: false
+camunda.security.initialization.users: [{username: demo, password: demo, name: Demo, email: demo@localhost}]
+camunda.security.initialization.default-roles.admin.users: [demo]
+
+camunda.data.secondary-storage.type: rdbms
+camunda.data.secondary-storage.rdbms.url: jdbc:h2:file:./camunda-data/h2db
+camunda.data.secondary-storage.rdbms.username: sa
+# Short flush interval: the adapter polls active elements once per second.
+camunda.data.secondary-storage.rdbms.flush-interval: PT0.5S

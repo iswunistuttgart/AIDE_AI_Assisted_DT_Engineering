@@ -1,0 +1,6 @@
+{
+  "order": 3,
+  "title": "YuMi tic-tac-toe",
+  "nodeset": "yumi-tictactoe.nodeset.xml",
+  "endpoint": "opc.tcp://opcua-yumi:4840/yumi/"
+}

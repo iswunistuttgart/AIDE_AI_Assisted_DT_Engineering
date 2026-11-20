@@ -1,0 +1,538 @@
+<?xml version="1.0" encoding="utf-8"?>
+<UANodeSet xmlns="http://opcfoundation.org/UA/2011/03/UANodeSet.xsd" xmlns:uax="http://opcfoundation.org/UA/2008/02/Types.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" LastModified="2026-11-07T00:00:00Z">
+  <NamespaceUris>
+    <Uri>urn:aide:milling-machine</Uri>
+  </NamespaceUris>
+  <Models>
+    <Model ModelUri="urn:aide:milling-machine" Version="1.0.0" PublicationDate="2026-11-07T00:00:00Z">
+      <RequiredModel ModelUri="http://opcfoundation.org/UA/" Version="1.04.0" PublicationDate="2019-05-01T00:00:00Z" />
+    </Model>
+  </Models>
+  <Aliases>
+    <Alias Alias="Boolean">i=1</Alias>
+    <Alias Alias="Int32">i=6</Alias>
+    <Alias Alias="UInt32">i=7</Alias>
+    <Alias Alias="Double">i=11</Alias>
+    <Alias Alias="String">i=12</Alias>
+    <Alias Alias="EUInformation">i=887</Alias>
+    <Alias Alias="Argument">i=296</Alias>
+    <Alias Alias="HasComponent">i=47</Alias>
+    <Alias Alias="HasProperty">i=46</Alias>
+    <Alias Alias="HasTypeDefinition">i=40</Alias>
+    <Alias Alias="Organizes">i=35</Alias>
+  </Aliases>
+  <UAObject NodeId="ns=1;s=MillingMachine" BrowseName="1:MillingMachine">
+    <DisplayName>MillingMachine</DisplayName>
+    <Description>5-axis milling machine with swivel axis A and rotary table C</Description>
+    <References>
+      <Reference ReferenceType="Organizes" IsForward="false">i=85</Reference>
+      <Reference ReferenceType="HasTypeDefinition">i=58</Reference>
+    </References>
+  </UAObject>
+  <UAObject NodeId="ns=1;s=MillingMachine/Monitoring" BrowseName="1:Monitoring" ParentNodeId="ns=1;s=MillingMachine">
+    <DisplayName>Monitoring</DisplayName>
+    <Description>Monitoring of the machine tool</Description>
+    <References>
+      <Reference ReferenceType="HasComponent" IsForward="false">ns=1;s=MillingMachine</Reference>
+      <Reference ReferenceType="HasTypeDefinition">i=58</Reference>
+    </References>
+  </UAObject>
+  <UAObject NodeId="ns=1;s=MillingMachine/Monitoring/MachineTool" BrowseName="1:MachineTool" ParentNodeId="ns=1;s=MillingMachine/Monitoring">
+    <DisplayName>MachineTool</DisplayName>
+    <Description>Overall state of the machine tool</Description>
+    <References>
+      <Reference ReferenceType="HasComponent" IsForward="false">ns=1;s=MillingMachine/Monitoring</Reference>
+      <Reference ReferenceType="HasTypeDefinition">i=58</Reference>
+    </References>
+  </UAObject>
+  <UAVariable NodeId="ns=1;s=MillingMachine/Monitoring/MachineTool/OperationMode" BrowseName="1:OperationMode" ParentNodeId="ns=1;s=MillingMachine/Monitoring/MachineTool" DataType="String" AccessLevel="1" UserAccessLevel="1">
+    <DisplayName>OperationMode</DisplayName>
+    <Description>Operation mode of the channel: AUTOMATIC, MDA or MANUAL</Description>
+    <References>
+      <Reference ReferenceType="HasComponent" IsForward="false">ns=1;s=MillingMachine/Monitoring/MachineTool</Reference>
+      <Reference ReferenceType="HasTypeDefinition">i=63</Reference>
+    </References>
+    <Value><uax:String>AUTOMATIC</uax:String></Value>
+  </UAVariable>
+  <UAVariable NodeId="ns=1;s=MillingMachine/Monitoring/MachineTool/FeedOverride" BrowseName="1:FeedOverride" ParentNodeId="ns=1;s=MillingMachine/Monitoring/MachineTool" DataType="Double" AccessLevel="3" UserAccessLevel="3">
+    <DisplayName>FeedOverride</DisplayName>
+    <Description>Feed override of the channel</Description>
+    <References>
+      <Reference ReferenceType="HasComponent" IsForward="false">ns=1;s=MillingMachine/Monitoring/MachineTool</Reference>
+      <Reference ReferenceType="HasTypeDefinition">i=2368</Reference>
+      <Reference ReferenceType="HasProperty">ns=1;s=MillingMachine/Monitoring/MachineTool/FeedOverride/EngineeringUnits</Reference>
+    </References>
+    <Value><uax:Double>100.0</uax:Double></Value>
+  </UAVariable>
+  <UAVariable NodeId="ns=1;s=MillingMachine/Monitoring/MachineTool/FeedOverride/EngineeringUnits" BrowseName="EngineeringUnits" ParentNodeId="ns=1;s=MillingMachine/Monitoring/MachineTool/FeedOverride" DataType="EUInformation">
+    <DisplayName>EngineeringUnits</DisplayName>
+    <References>
+      <Reference ReferenceType="HasProperty" IsForward="false">ns=1;s=MillingMachine/Monitoring/MachineTool/FeedOverride</Reference>
+      <Reference ReferenceType="HasTypeDefinition">i=68</Reference>
+    </References>
+    <Value><uax:ExtensionObject><uax:TypeId><uax:Identifier>i=888</uax:Identifier></uax:TypeId><uax:Body><uax:EUInformation><uax:NamespaceUri>http://www.opcfoundation.org/UA/units/un/cefact</uax:NamespaceUri><uax:UnitId>20529</uax:UnitId><uax:DisplayName><uax:Locale>en</uax:Locale><uax:Text>%</uax:Text></uax:DisplayName><uax:Description><uax:Locale>en</uax:Locale><uax:Text>%</uax:Text></uax:Description></uax:EUInformation></uax:Body></uax:ExtensionObject></Value>
+  </UAVariable>
+  <UAVariable NodeId="ns=1;s=MillingMachine/Monitoring/MachineTool/PowerConsumption" BrowseName="1:PowerConsumption" ParentNodeId="ns=1;s=MillingMachine/Monitoring/MachineTool" DataType="Double" AccessLevel="1" UserAccessLevel="1">
+    <DisplayName>PowerConsumption</DisplayName>
+    <Description>Electrical power of the machine</Description>
+    <References>
+      <Reference ReferenceType="HasComponent" IsForward="false">ns=1;s=MillingMachine/Monitoring/MachineTool</Reference>
+      <Reference ReferenceType="HasTypeDefinition">i=2368</Reference>
+      <Reference ReferenceType="HasProperty">ns=1;s=MillingMachine/Monitoring/MachineTool/PowerConsumption/EngineeringUnits</Reference>
+    </References>
+    <Value><uax:Double>18.5</uax:Double></Value>
+  </UAVariable>
+  <UAVariable NodeId="ns=1;s=MillingMachine/Monitoring/MachineTool/PowerConsumption/EngineeringUnits" BrowseName="EngineeringUnits" ParentNodeId="ns=1;s=MillingMachine/Monitoring/MachineTool/PowerConsumption" DataType="EUInformation">
+    <DisplayName>EngineeringUnits</DisplayName>
+    <References>
+      <Reference ReferenceType="HasProperty" IsForward="false">ns=1;s=MillingMachine/Monitoring/MachineTool/PowerConsumption</Reference>
+      <Reference ReferenceType="HasTypeDefinition">i=68</Reference>
+    </References>
+    <Value><uax:ExtensionObject><uax:TypeId><uax:Identifier>i=888</uax:Identifier></uax:TypeId><uax:Body><uax:EUInformation><uax:NamespaceUri>http://www.opcfoundation.org/UA/units/un/cefact</uax:NamespaceUri><uax:UnitId>4937556</uax:UnitId><uax:DisplayName><uax:Locale>en</uax:Locale><uax:Text>kW</uax:Text></uax:DisplayName><uax:Description><uax:Locale>en</uax:Locale><uax:Text>kW</uax:Text></uax:Description></uax:EUInformation></uax:Body></uax:ExtensionObject></Value>
+  </UAVariable>
+  <UAObject NodeId="ns=1;s=MillingMachine/Monitoring/Spindle" BrowseName="1:Spindle" ParentNodeId="ns=1;s=MillingMachine/Monitoring">
+    <DisplayName>Spindle</DisplayName>
+    <Description>Main spindle</Description>
+    <References>
+      <Reference ReferenceType="HasComponent" IsForward="false">ns=1;s=MillingMachine/Monitoring</Reference>
+      <Reference ReferenceType="HasTypeDefinition">i=58</Reference>
+    </References>
+  </UAObject>
+  <UAVariable NodeId="ns=1;s=MillingMachine/Monitoring/Spindle/ActualSpeed" BrowseName="1:ActualSpeed" ParentNodeId="ns=1;s=MillingMachine/Monitoring/Spindle" DataType="Int32" AccessLevel="1" UserAccessLevel="1">
+    <DisplayName>ActualSpeed</DisplayName>
+    <Description>Actual speed of the main spindle</Description>
+    <References>
+      <Reference ReferenceType="HasComponent" IsForward="false">ns=1;s=MillingMachine/Monitoring/Spindle</Reference>
+      <Reference ReferenceType="HasTypeDefinition">i=2368</Reference>
+      <Reference ReferenceType="HasProperty">ns=1;s=MillingMachine/Monitoring/Spindle/ActualSpeed/EngineeringUnits</Reference>
+    </References>
+    <Value><uax:Int32>12000</uax:Int32></Value>
+  </UAVariable>
+  <UAVariable NodeId="ns=1;s=MillingMachine/Monitoring/Spindle/ActualSpeed/EngineeringUnits" BrowseName="EngineeringUnits" ParentNodeId="ns=1;s=MillingMachine/Monitoring/Spindle/ActualSpeed" DataType="EUInformation">
+    <DisplayName>EngineeringUnits</DisplayName>
+    <References>
+      <Reference ReferenceType="HasProperty" IsForward="false">ns=1;s=MillingMachine/Monitoring/Spindle/ActualSpeed</Reference>
+      <Reference ReferenceType="HasTypeDefinition">i=68</Reference>
+    </References>
+    <Value><uax:ExtensionObject><uax:TypeId><uax:Identifier>i=888</uax:Identifier></uax:TypeId><uax:Body><uax:EUInformation><uax:NamespaceUri>http://www.opcfoundation.org/UA/units/un/cefact</uax:NamespaceUri><uax:UnitId>5394509</uax:UnitId><uax:DisplayName><uax:Locale>en</uax:Locale><uax:Text>rpm</uax:Text></uax:DisplayName><uax:Description><uax:Locale>en</uax:Locale><uax:Text>rpm</uax:Text></uax:Description></uax:EUInformation></uax:Body></uax:ExtensionObject></Value>
+  </UAVariable>
+  <UAVariable NodeId="ns=1;s=MillingMachine/Monitoring/Spindle/Override" BrowseName="1:Override" ParentNodeId="ns=1;s=MillingMachine/Monitoring/Spindle" DataType="Double" AccessLevel="3" UserAccessLevel="3">
+    <DisplayName>Override</DisplayName>
+    <Description>Spindle speed override</Description>
+    <References>
+      <Reference ReferenceType="HasComponent" IsForward="false">ns=1;s=MillingMachine/Monitoring/Spindle</Reference>
+      <Reference ReferenceType="HasTypeDefinition">i=2368</Reference>
+      <Reference ReferenceType="HasProperty">ns=1;s=MillingMachine/Monitoring/Spindle/Override/EngineeringUnits</Reference>
+    </References>
+    <Value><uax:Double>100.0</uax:Double></Value>
+  </UAVariable>
+  <UAVariable NodeId="ns=1;s=MillingMachine/Monitoring/Spindle/Override/EngineeringUnits" BrowseName="EngineeringUnits" ParentNodeId="ns=1;s=MillingMachine/Monitoring/Spindle/Override" DataType="EUInformation">
+    <DisplayName>EngineeringUnits</DisplayName>
+    <References>
+      <Reference ReferenceType="HasProperty" IsForward="false">ns=1;s=MillingMachine/Monitoring/Spindle/Override</Reference>
+      <Reference ReferenceType="HasTypeDefinition">i=68</Reference>
+    </References>
+    <Value><uax:ExtensionObject><uax:TypeId><uax:Identifier>i=888</uax:Identifier></uax:TypeId><uax:Body><uax:EUInformation><uax:NamespaceUri>http://www.opcfoundation.org/UA/units/un/cefact</uax:NamespaceUri><uax:UnitId>20529</uax:UnitId><uax:DisplayName><uax:Locale>en</uax:Locale><uax:Text>%</uax:Text></uax:DisplayName><uax:Description><uax:Locale>en</uax:Locale><uax:Text>%</uax:Text></uax:Description></uax:EUInformation></uax:Body></uax:ExtensionObject></Value>
+  </UAVariable>
+  <UAVariable NodeId="ns=1;s=MillingMachine/Monitoring/Spindle/Load" BrowseName="1:Load" ParentNodeId="ns=1;s=MillingMachine/Monitoring/Spindle" DataType="Double" AccessLevel="1" UserAccessLevel="1">
+    <DisplayName>Load</DisplayName>
+    <Description>Motor load of the main spindle</Description>
+    <References>
+      <Reference ReferenceType="HasComponent" IsForward="false">ns=1;s=MillingMachine/Monitoring/Spindle</Reference>
+      <Reference ReferenceType="HasTypeDefinition">i=2368</Reference>
+      <Reference ReferenceType="HasProperty">ns=1;s=MillingMachine/Monitoring/Spindle/Load/EngineeringUnits</Reference>
+    </References>
+    <Value><uax:Double>35.0</uax:Double></Value>
+  </UAVariable>
+  <UAVariable NodeId="ns=1;s=MillingMachine/Monitoring/Spindle/Load/EngineeringUnits" BrowseName="EngineeringUnits" ParentNodeId="ns=1;s=MillingMachine/Monitoring/Spindle/Load" DataType="EUInformation">
+    <DisplayName>EngineeringUnits</DisplayName>
+    <References>
+      <Reference ReferenceType="HasProperty" IsForward="false">ns=1;s=MillingMachine/Monitoring/Spindle/Load</Reference>
+      <Reference ReferenceType="HasTypeDefinition">i=68</Reference>
+    </References>
+    <Value><uax:ExtensionObject><uax:TypeId><uax:Identifier>i=888</uax:Identifier></uax:TypeId><uax:Body><uax:EUInformation><uax:NamespaceUri>http://www.opcfoundation.org/UA/units/un/cefact</uax:NamespaceUri><uax:UnitId>20529</uax:UnitId><uax:DisplayName><uax:Locale>en</uax:Locale><uax:Text>%</uax:Text></uax:DisplayName><uax:Description><uax:Locale>en</uax:Locale><uax:Text>%</uax:Text></uax:Description></uax:EUInformation></uax:Body></uax:ExtensionObject></Value>
+  </UAVariable>
+  <UAVariable NodeId="ns=1;s=MillingMachine/Monitoring/Spindle/Vibration" BrowseName="1:Vibration" ParentNodeId="ns=1;s=MillingMachine/Monitoring/Spindle" DataType="Double" AccessLevel="1" UserAccessLevel="1">
+    <DisplayName>Vibration</DisplayName>
+    <Description>Vibration velocity at the front spindle bearing</Description>
+    <References>
+      <Reference ReferenceType="HasComponent" IsForward="false">ns=1;s=MillingMachine/Monitoring/Spindle</Reference>
+      <Reference ReferenceType="HasTypeDefinition">i=2368</Reference>
+      <Reference ReferenceType="HasProperty">ns=1;s=MillingMachine/Monitoring/Spindle/Vibration/EngineeringUnits</Reference>
+    </References>
+    <Value><uax:Double>1.2</uax:Double></Value>
+  </UAVariable>
+  <UAVariable NodeId="ns=1;s=MillingMachine/Monitoring/Spindle/Vibration/EngineeringUnits" BrowseName="EngineeringUnits" ParentNodeId="ns=1;s=MillingMachine/Monitoring/Spindle/Vibration" DataType="EUInformation">
+    <DisplayName>EngineeringUnits</DisplayName>
+    <References>
+      <Reference ReferenceType="HasProperty" IsForward="false">ns=1;s=MillingMachine/Monitoring/Spindle/Vibration</Reference>
+      <Reference ReferenceType="HasTypeDefinition">i=68</Reference>
+    </References>
+    <Value><uax:ExtensionObject><uax:TypeId><uax:Identifier>i=888</uax:Identifier></uax:TypeId><uax:Body><uax:EUInformation><uax:NamespaceUri>http://www.opcfoundation.org/UA/units/un/cefact</uax:NamespaceUri><uax:UnitId>4403510</uax:UnitId><uax:DisplayName><uax:Locale>en</uax:Locale><uax:Text>mm/s</uax:Text></uax:DisplayName><uax:Description><uax:Locale>en</uax:Locale><uax:Text>mm/s</uax:Text></uax:Description></uax:EUInformation></uax:Body></uax:ExtensionObject></Value>
+  </UAVariable>
+  <UAVariable NodeId="ns=1;s=MillingMachine/Monitoring/Spindle/BearingTemperature" BrowseName="1:BearingTemperature" ParentNodeId="ns=1;s=MillingMachine/Monitoring/Spindle" DataType="Double" AccessLevel="1" UserAccessLevel="1">
+    <DisplayName>BearingTemperature</DisplayName>
+    <Description>Temperature of the front spindle bearing</Description>
+    <References>
+      <Reference ReferenceType="HasComponent" IsForward="false">ns=1;s=MillingMachine/Monitoring/Spindle</Reference>
+      <Reference ReferenceType="HasTypeDefinition">i=2368</Reference>
+      <Reference ReferenceType="HasProperty">ns=1;s=MillingMachine/Monitoring/Spindle/BearingTemperature/EngineeringUnits</Reference>
+    </References>
+    <Value><uax:Double>308.15</uax:Double></Value>
+  </UAVariable>
+  <UAVariable NodeId="ns=1;s=MillingMachine/Monitoring/Spindle/BearingTemperature/EngineeringUnits" BrowseName="EngineeringUnits" ParentNodeId="ns=1;s=MillingMachine/Monitoring/Spindle/BearingTemperature" DataType="EUInformation">
+    <DisplayName>EngineeringUnits</DisplayName>
+    <References>
+      <Reference ReferenceType="HasProperty" IsForward="false">ns=1;s=MillingMachine/Monitoring/Spindle/BearingTemperature</Reference>
+      <Reference ReferenceType="HasTypeDefinition">i=68</Reference>
+    </References>
+    <Value><uax:ExtensionObject><uax:TypeId><uax:Identifier>i=888</uax:Identifier></uax:TypeId><uax:Body><uax:EUInformation><uax:NamespaceUri>http://www.opcfoundation.org/UA/units/un/cefact</uax:NamespaceUri><uax:UnitId>4932940</uax:UnitId><uax:DisplayName><uax:Locale>en</uax:Locale><uax:Text>K</uax:Text></uax:DisplayName><uax:Description><uax:Locale>en</uax:Locale><uax:Text>K</uax:Text></uax:Description></uax:EUInformation></uax:Body></uax:ExtensionObject></Value>
+  </UAVariable>
+  <UAObject NodeId="ns=1;s=MillingMachine/Monitoring/Axes" BrowseName="1:Axes" ParentNodeId="ns=1;s=MillingMachine/Monitoring">
+    <DisplayName>Axes</DisplayName>
+    <Description>Linear axes X, Y, Z, swivel axis A and rotary table C</Description>
+    <References>
+      <Reference ReferenceType="HasComponent" IsForward="false">ns=1;s=MillingMachine/Monitoring</Reference>
+      <Reference ReferenceType="HasTypeDefinition">i=58</Reference>
+    </References>
+  </UAObject>
+  <UAObject NodeId="ns=1;s=MillingMachine/Monitoring/Axes/X" BrowseName="1:X" ParentNodeId="ns=1;s=MillingMachine/Monitoring/Axes">
+    <DisplayName>X</DisplayName>
+    <Description>Linear axis X</Description>
+    <References>
+      <Reference ReferenceType="HasComponent" IsForward="false">ns=1;s=MillingMachine/Monitoring/Axes</Reference>
+      <Reference ReferenceType="HasTypeDefinition">i=58</Reference>
+    </References>
+  </UAObject>
+  <UAVariable NodeId="ns=1;s=MillingMachine/Monitoring/Axes/X/ActualPosition" BrowseName="1:ActualPosition" ParentNodeId="ns=1;s=MillingMachine/Monitoring/Axes/X" DataType="Double" AccessLevel="1" UserAccessLevel="1">
+    <DisplayName>ActualPosition</DisplayName>
+    <Description>Actual position of axis X</Description>
+    <References>
+      <Reference ReferenceType="HasComponent" IsForward="false">ns=1;s=MillingMachine/Monitoring/Axes/X</Reference>
+      <Reference ReferenceType="HasTypeDefinition">i=2368</Reference>
+      <Reference ReferenceType="HasProperty">ns=1;s=MillingMachine/Monitoring/Axes/X/ActualPosition/EngineeringUnits</Reference>
+    </References>
+    <Value><uax:Double>120.0</uax:Double></Value>
+  </UAVariable>
+  <UAVariable NodeId="ns=1;s=MillingMachine/Monitoring/Axes/X/ActualPosition/EngineeringUnits" BrowseName="EngineeringUnits" ParentNodeId="ns=1;s=MillingMachine/Monitoring/Axes/X/ActualPosition" DataType="EUInformation">
+    <DisplayName>EngineeringUnits</DisplayName>
+    <References>
+      <Reference ReferenceType="HasProperty" IsForward="false">ns=1;s=MillingMachine/Monitoring/Axes/X/ActualPosition</Reference>
+      <Reference ReferenceType="HasTypeDefinition">i=68</Reference>
+    </References>
+    <Value><uax:ExtensionObject><uax:TypeId><uax:Identifier>i=888</uax:Identifier></uax:TypeId><uax:Body><uax:EUInformation><uax:NamespaceUri>http://www.opcfoundation.org/UA/units/un/cefact</uax:NamespaceUri><uax:UnitId>5066068</uax:UnitId><uax:DisplayName><uax:Locale>en</uax:Locale><uax:Text>mm</uax:Text></uax:DisplayName><uax:Description><uax:Locale>en</uax:Locale><uax:Text>mm</uax:Text></uax:Description></uax:EUInformation></uax:Body></uax:ExtensionObject></Value>
+  </UAVariable>
+  <UAObject NodeId="ns=1;s=MillingMachine/Monitoring/Axes/Y" BrowseName="1:Y" ParentNodeId="ns=1;s=MillingMachine/Monitoring/Axes">
+    <DisplayName>Y</DisplayName>
+    <Description>Linear axis Y</Description>
+    <References>
+      <Reference ReferenceType="HasComponent" IsForward="false">ns=1;s=MillingMachine/Monitoring/Axes</Reference>
+      <Reference ReferenceType="HasTypeDefinition">i=58</Reference>
+    </References>
+  </UAObject>
+  <UAVariable NodeId="ns=1;s=MillingMachine/Monitoring/Axes/Y/ActualPosition" BrowseName="1:ActualPosition" ParentNodeId="ns=1;s=MillingMachine/Monitoring/Axes/Y" DataType="Double" AccessLevel="1" UserAccessLevel="1">
+    <DisplayName>ActualPosition</DisplayName>
+    <Description>Actual position of axis Y</Description>
+    <References>
+      <Reference ReferenceType="HasComponent" IsForward="false">ns=1;s=MillingMachine/Monitoring/Axes/Y</Reference>
+      <Reference ReferenceType="HasTypeDefinition">i=2368</Reference>
+      <Reference ReferenceType="HasProperty">ns=1;s=MillingMachine/Monitoring/Axes/Y/ActualPosition/EngineeringUnits</Reference>
+    </References>
+    <Value><uax:Double>80.0</uax:Double></Value>
+  </UAVariable>
+  <UAVariable NodeId="ns=1;s=MillingMachine/Monitoring/Axes/Y/ActualPosition/EngineeringUnits" BrowseName="EngineeringUnits" ParentNodeId="ns=1;s=MillingMachine/Monitoring/Axes/Y/ActualPosition" DataType="EUInformation">
+    <DisplayName>EngineeringUnits</DisplayName>
+    <References>
+      <Reference ReferenceType="HasProperty" IsForward="false">ns=1;s=MillingMachine/Monitoring/Axes/Y/ActualPosition</Reference>
+      <Reference ReferenceType="HasTypeDefinition">i=68</Reference>
+    </References>
+    <Value><uax:ExtensionObject><uax:TypeId><uax:Identifier>i=888</uax:Identifier></uax:TypeId><uax:Body><uax:EUInformation><uax:NamespaceUri>http://www.opcfoundation.org/UA/units/un/cefact</uax:NamespaceUri><uax:UnitId>5066068</uax:UnitId><uax:DisplayName><uax:Locale>en</uax:Locale><uax:Text>mm</uax:Text></uax:DisplayName><uax:Description><uax:Locale>en</uax:Locale><uax:Text>mm</uax:Text></uax:Description></uax:EUInformation></uax:Body></uax:ExtensionObject></Value>
+  </UAVariable>
+  <UAObject NodeId="ns=1;s=MillingMachine/Monitoring/Axes/Z" BrowseName="1:Z" ParentNodeId="ns=1;s=MillingMachine/Monitoring/Axes">
+    <DisplayName>Z</DisplayName>
+    <Description>Linear axis Z</Description>
+    <References>
+      <Reference ReferenceType="HasComponent" IsForward="false">ns=1;s=MillingMachine/Monitoring/Axes</Reference>
+      <Reference ReferenceType="HasTypeDefinition">i=58</Reference>
+    </References>
+  </UAObject>
+  <UAVariable NodeId="ns=1;s=MillingMachine/Monitoring/Axes/Z/ActualPosition" BrowseName="1:ActualPosition" ParentNodeId="ns=1;s=MillingMachine/Monitoring/Axes/Z" DataType="Double" AccessLevel="1" UserAccessLevel="1">
+    <DisplayName>ActualPosition</DisplayName>
+    <Description>Actual position of axis Z</Description>
+    <References>
+      <Reference ReferenceType="HasComponent" IsForward="false">ns=1;s=MillingMachine/Monitoring/Axes/Z</Reference>
+      <Reference ReferenceType="HasTypeDefinition">i=2368</Reference>
+      <Reference ReferenceType="HasProperty">ns=1;s=MillingMachine/Monitoring/Axes/Z/ActualPosition/EngineeringUnits</Reference>
+    </References>
+    <Value><uax:Double>-45.0</uax:Double></Value>
+  </UAVariable>
+  <UAVariable NodeId="ns=1;s=MillingMachine/Monitoring/Axes/Z/ActualPosition/EngineeringUnits" BrowseName="EngineeringUnits" ParentNodeId="ns=1;s=MillingMachine/Monitoring/Axes/Z/ActualPosition" DataType="EUInformation">
+    <DisplayName>EngineeringUnits</DisplayName>
+    <References>
+      <Reference ReferenceType="HasProperty" IsForward="false">ns=1;s=MillingMachine/Monitoring/Axes/Z/ActualPosition</Reference>
+      <Reference ReferenceType="HasTypeDefinition">i=68</Reference>
+    </References>
+    <Value><uax:ExtensionObject><uax:TypeId><uax:Identifier>i=888</uax:Identifier></uax:TypeId><uax:Body><uax:EUInformation><uax:NamespaceUri>http://www.opcfoundation.org/UA/units/un/cefact</uax:NamespaceUri><uax:UnitId>5066068</uax:UnitId><uax:DisplayName><uax:Locale>en</uax:Locale><uax:Text>mm</uax:Text></uax:DisplayName><uax:Description><uax:Locale>en</uax:Locale><uax:Text>mm</uax:Text></uax:Description></uax:EUInformation></uax:Body></uax:ExtensionObject></Value>
+  </UAVariable>
+  <UAObject NodeId="ns=1;s=MillingMachine/Monitoring/Axes/A" BrowseName="1:A" ParentNodeId="ns=1;s=MillingMachine/Monitoring/Axes">
+    <DisplayName>A</DisplayName>
+    <Description>Swivel axis A of the trunnion</Description>
+    <References>
+      <Reference ReferenceType="HasComponent" IsForward="false">ns=1;s=MillingMachine/Monitoring/Axes</Reference>
+      <Reference ReferenceType="HasTypeDefinition">i=58</Reference>
+    </References>
+  </UAObject>
+  <UAVariable NodeId="ns=1;s=MillingMachine/Monitoring/Axes/A/ActualPosition" BrowseName="1:ActualPosition" ParentNodeId="ns=1;s=MillingMachine/Monitoring/Axes/A" DataType="Double" AccessLevel="1" UserAccessLevel="1">
+    <DisplayName>ActualPosition</DisplayName>
+    <Description>Actual angle of the swivel axis A</Description>
+    <References>
+      <Reference ReferenceType="HasComponent" IsForward="false">ns=1;s=MillingMachine/Monitoring/Axes/A</Reference>
+      <Reference ReferenceType="HasTypeDefinition">i=2368</Reference>
+      <Reference ReferenceType="HasProperty">ns=1;s=MillingMachine/Monitoring/Axes/A/ActualPosition/EngineeringUnits</Reference>
+    </References>
+    <Value><uax:Double>30.0</uax:Double></Value>
+  </UAVariable>
+  <UAVariable NodeId="ns=1;s=MillingMachine/Monitoring/Axes/A/ActualPosition/EngineeringUnits" BrowseName="EngineeringUnits" ParentNodeId="ns=1;s=MillingMachine/Monitoring/Axes/A/ActualPosition" DataType="EUInformation">
+    <DisplayName>EngineeringUnits</DisplayName>
+    <References>
+      <Reference ReferenceType="HasProperty" IsForward="false">ns=1;s=MillingMachine/Monitoring/Axes/A/ActualPosition</Reference>
+      <Reference ReferenceType="HasTypeDefinition">i=68</Reference>
+    </References>
+    <Value><uax:ExtensionObject><uax:TypeId><uax:Identifier>i=888</uax:Identifier></uax:TypeId><uax:Body><uax:EUInformation><uax:NamespaceUri>http://www.opcfoundation.org/UA/units/un/cefact</uax:NamespaceUri><uax:UnitId>17476</uax:UnitId><uax:DisplayName><uax:Locale>en</uax:Locale><uax:Text>°</uax:Text></uax:DisplayName><uax:Description><uax:Locale>en</uax:Locale><uax:Text>°</uax:Text></uax:Description></uax:EUInformation></uax:Body></uax:ExtensionObject></Value>
+  </UAVariable>
+  <UAVariable NodeId="ns=1;s=MillingMachine/Monitoring/Axes/A/MotorTemperature" BrowseName="1:MotorTemperature" ParentNodeId="ns=1;s=MillingMachine/Monitoring/Axes/A" DataType="Double" AccessLevel="1" UserAccessLevel="1">
+    <DisplayName>MotorTemperature</DisplayName>
+    <Description>Motor temperature of the swivel axis A</Description>
+    <References>
+      <Reference ReferenceType="HasComponent" IsForward="false">ns=1;s=MillingMachine/Monitoring/Axes/A</Reference>
+      <Reference ReferenceType="HasTypeDefinition">i=2368</Reference>
+      <Reference ReferenceType="HasProperty">ns=1;s=MillingMachine/Monitoring/Axes/A/MotorTemperature/EngineeringUnits</Reference>
+    </References>
+    <Value><uax:Double>42.0</uax:Double></Value>
+  </UAVariable>
+  <UAVariable NodeId="ns=1;s=MillingMachine/Monitoring/Axes/A/MotorTemperature/EngineeringUnits" BrowseName="EngineeringUnits" ParentNodeId="ns=1;s=MillingMachine/Monitoring/Axes/A/MotorTemperature" DataType="EUInformation">
+    <DisplayName>EngineeringUnits</DisplayName>
+    <References>
+      <Reference ReferenceType="HasProperty" IsForward="false">ns=1;s=MillingMachine/Monitoring/Axes/A/MotorTemperature</Reference>
+      <Reference ReferenceType="HasTypeDefinition">i=68</Reference>
+    </References>
+    <Value><uax:ExtensionObject><uax:TypeId><uax:Identifier>i=888</uax:Identifier></uax:TypeId><uax:Body><uax:EUInformation><uax:NamespaceUri>http://www.opcfoundation.org/UA/units/un/cefact</uax:NamespaceUri><uax:UnitId>4408652</uax:UnitId><uax:DisplayName><uax:Locale>en</uax:Locale><uax:Text>°C</uax:Text></uax:DisplayName><uax:Description><uax:Locale>en</uax:Locale><uax:Text>°C</uax:Text></uax:Description></uax:EUInformation></uax:Body></uax:ExtensionObject></Value>
+  </UAVariable>
+  <UAObject NodeId="ns=1;s=MillingMachine/Monitoring/Axes/C" BrowseName="1:C" ParentNodeId="ns=1;s=MillingMachine/Monitoring/Axes">
+    <DisplayName>C</DisplayName>
+    <Description>Rotary table C</Description>
+    <References>
+      <Reference ReferenceType="HasComponent" IsForward="false">ns=1;s=MillingMachine/Monitoring/Axes</Reference>
+      <Reference ReferenceType="HasTypeDefinition">i=58</Reference>
+    </References>
+  </UAObject>
+  <UAVariable NodeId="ns=1;s=MillingMachine/Monitoring/Axes/C/ActualPosition" BrowseName="1:ActualPosition" ParentNodeId="ns=1;s=MillingMachine/Monitoring/Axes/C" DataType="Double" AccessLevel="1" UserAccessLevel="1">
+    <DisplayName>ActualPosition</DisplayName>
+    <Description>Actual angle of the rotary table C</Description>
+    <References>
+      <Reference ReferenceType="HasComponent" IsForward="false">ns=1;s=MillingMachine/Monitoring/Axes/C</Reference>
+      <Reference ReferenceType="HasTypeDefinition">i=2368</Reference>
+      <Reference ReferenceType="HasProperty">ns=1;s=MillingMachine/Monitoring/Axes/C/ActualPosition/EngineeringUnits</Reference>
+    </References>
+    <Value><uax:Double>90.0</uax:Double></Value>
+  </UAVariable>
+  <UAVariable NodeId="ns=1;s=MillingMachine/Monitoring/Axes/C/ActualPosition/EngineeringUnits" BrowseName="EngineeringUnits" ParentNodeId="ns=1;s=MillingMachine/Monitoring/Axes/C/ActualPosition" DataType="EUInformation">
+    <DisplayName>EngineeringUnits</DisplayName>
+    <References>
+      <Reference ReferenceType="HasProperty" IsForward="false">ns=1;s=MillingMachine/Monitoring/Axes/C/ActualPosition</Reference>
+      <Reference ReferenceType="HasTypeDefinition">i=68</Reference>
+    </References>
+    <Value><uax:ExtensionObject><uax:TypeId><uax:Identifier>i=888</uax:Identifier></uax:TypeId><uax:Body><uax:EUInformation><uax:NamespaceUri>http://www.opcfoundation.org/UA/units/un/cefact</uax:NamespaceUri><uax:UnitId>17476</uax:UnitId><uax:DisplayName><uax:Locale>en</uax:Locale><uax:Text>°</uax:Text></uax:DisplayName><uax:Description><uax:Locale>en</uax:Locale><uax:Text>°</uax:Text></uax:Description></uax:EUInformation></uax:Body></uax:ExtensionObject></Value>
+  </UAVariable>
+  <UAVariable NodeId="ns=1;s=MillingMachine/Monitoring/Axes/C/MotorTemperature" BrowseName="1:MotorTemperature" ParentNodeId="ns=1;s=MillingMachine/Monitoring/Axes/C" DataType="Double" AccessLevel="1" UserAccessLevel="1">
+    <DisplayName>MotorTemperature</DisplayName>
+    <Description>Motor temperature of the rotary table drive C</Description>
+    <References>
+      <Reference ReferenceType="HasComponent" IsForward="false">ns=1;s=MillingMachine/Monitoring/Axes/C</Reference>
+      <Reference ReferenceType="HasTypeDefinition">i=2368</Reference>
+      <Reference ReferenceType="HasProperty">ns=1;s=MillingMachine/Monitoring/Axes/C/MotorTemperature/EngineeringUnits</Reference>
+    </References>
+    <Value><uax:Double>45.0</uax:Double></Value>
+  </UAVariable>
+  <UAVariable NodeId="ns=1;s=MillingMachine/Monitoring/Axes/C/MotorTemperature/EngineeringUnits" BrowseName="EngineeringUnits" ParentNodeId="ns=1;s=MillingMachine/Monitoring/Axes/C/MotorTemperature" DataType="EUInformation">
+    <DisplayName>EngineeringUnits</DisplayName>
+    <References>
+      <Reference ReferenceType="HasProperty" IsForward="false">ns=1;s=MillingMachine/Monitoring/Axes/C/MotorTemperature</Reference>
+      <Reference ReferenceType="HasTypeDefinition">i=68</Reference>
+    </References>
+    <Value><uax:ExtensionObject><uax:TypeId><uax:Identifier>i=888</uax:Identifier></uax:TypeId><uax:Body><uax:EUInformation><uax:NamespaceUri>http://www.opcfoundation.org/UA/units/un/cefact</uax:NamespaceUri><uax:UnitId>4408652</uax:UnitId><uax:DisplayName><uax:Locale>en</uax:Locale><uax:Text>°C</uax:Text></uax:DisplayName><uax:Description><uax:Locale>en</uax:Locale><uax:Text>°C</uax:Text></uax:Description></uax:EUInformation></uax:Body></uax:ExtensionObject></Value>
+  </UAVariable>
+  <UAObject NodeId="ns=1;s=MillingMachine/Monitoring/Coolant" BrowseName="1:Coolant" ParentNodeId="ns=1;s=MillingMachine/Monitoring">
+    <DisplayName>Coolant</DisplayName>
+    <Description>Coolant supply</Description>
+    <References>
+      <Reference ReferenceType="HasComponent" IsForward="false">ns=1;s=MillingMachine/Monitoring</Reference>
+      <Reference ReferenceType="HasTypeDefinition">i=58</Reference>
+    </References>
+  </UAObject>
+  <UAVariable NodeId="ns=1;s=MillingMachine/Monitoring/Coolant/Pressure" BrowseName="1:Pressure" ParentNodeId="ns=1;s=MillingMachine/Monitoring/Coolant" DataType="Double" AccessLevel="1" UserAccessLevel="1">
+    <DisplayName>Pressure</DisplayName>
+    <Description>Coolant pressure at the spindle nozzles</Description>
+    <References>
+      <Reference ReferenceType="HasComponent" IsForward="false">ns=1;s=MillingMachine/Monitoring/Coolant</Reference>
+      <Reference ReferenceType="HasTypeDefinition">i=2368</Reference>
+      <Reference ReferenceType="HasProperty">ns=1;s=MillingMachine/Monitoring/Coolant/Pressure/EngineeringUnits</Reference>
+    </References>
+    <Value><uax:Double>6.0</uax:Double></Value>
+  </UAVariable>
+  <UAVariable NodeId="ns=1;s=MillingMachine/Monitoring/Coolant/Pressure/EngineeringUnits" BrowseName="EngineeringUnits" ParentNodeId="ns=1;s=MillingMachine/Monitoring/Coolant/Pressure" DataType="EUInformation">
+    <DisplayName>EngineeringUnits</DisplayName>
+    <References>
+      <Reference ReferenceType="HasProperty" IsForward="false">ns=1;s=MillingMachine/Monitoring/Coolant/Pressure</Reference>
+      <Reference ReferenceType="HasTypeDefinition">i=68</Reference>
+    </References>
+    <Value><uax:ExtensionObject><uax:TypeId><uax:Identifier>i=888</uax:Identifier></uax:TypeId><uax:Body><uax:EUInformation><uax:NamespaceUri>http://www.opcfoundation.org/UA/units/un/cefact</uax:NamespaceUri><uax:UnitId>4342098</uax:UnitId><uax:DisplayName><uax:Locale>en</uax:Locale><uax:Text>bar</uax:Text></uax:DisplayName><uax:Description><uax:Locale>en</uax:Locale><uax:Text>bar</uax:Text></uax:Description></uax:EUInformation></uax:Body></uax:ExtensionObject></Value>
+  </UAVariable>
+  <UAVariable NodeId="ns=1;s=MillingMachine/Monitoring/Coolant/Level" BrowseName="1:Level" ParentNodeId="ns=1;s=MillingMachine/Monitoring/Coolant" DataType="Double" AccessLevel="1" UserAccessLevel="1">
+    <DisplayName>Level</DisplayName>
+    <Description>Fill level of the coolant tank</Description>
+    <References>
+      <Reference ReferenceType="HasComponent" IsForward="false">ns=1;s=MillingMachine/Monitoring/Coolant</Reference>
+      <Reference ReferenceType="HasTypeDefinition">i=2368</Reference>
+      <Reference ReferenceType="HasProperty">ns=1;s=MillingMachine/Monitoring/Coolant/Level/EngineeringUnits</Reference>
+    </References>
+    <Value><uax:Double>78.0</uax:Double></Value>
+  </UAVariable>
+  <UAVariable NodeId="ns=1;s=MillingMachine/Monitoring/Coolant/Level/EngineeringUnits" BrowseName="EngineeringUnits" ParentNodeId="ns=1;s=MillingMachine/Monitoring/Coolant/Level" DataType="EUInformation">
+    <DisplayName>EngineeringUnits</DisplayName>
+    <References>
+      <Reference ReferenceType="HasProperty" IsForward="false">ns=1;s=MillingMachine/Monitoring/Coolant/Level</Reference>
+      <Reference ReferenceType="HasTypeDefinition">i=68</Reference>
+    </References>
+    <Value><uax:ExtensionObject><uax:TypeId><uax:Identifier>i=888</uax:Identifier></uax:TypeId><uax:Body><uax:EUInformation><uax:NamespaceUri>http://www.opcfoundation.org/UA/units/un/cefact</uax:NamespaceUri><uax:UnitId>20529</uax:UnitId><uax:DisplayName><uax:Locale>en</uax:Locale><uax:Text>%</uax:Text></uax:DisplayName><uax:Description><uax:Locale>en</uax:Locale><uax:Text>%</uax:Text></uax:Description></uax:EUInformation></uax:Body></uax:ExtensionObject></Value>
+  </UAVariable>
+  <UAVariable NodeId="ns=1;s=MillingMachine/Monitoring/Coolant/BoostOn" BrowseName="1:BoostOn" ParentNodeId="ns=1;s=MillingMachine/Monitoring/Coolant" DataType="Boolean" AccessLevel="3" UserAccessLevel="3">
+    <DisplayName>BoostOn</DisplayName>
+    <Description>Switches the high-pressure coolant boost on or off</Description>
+    <References>
+      <Reference ReferenceType="HasComponent" IsForward="false">ns=1;s=MillingMachine/Monitoring/Coolant</Reference>
+      <Reference ReferenceType="HasTypeDefinition">i=63</Reference>
+    </References>
+    <Value><uax:Boolean>false</uax:Boolean></Value>
+  </UAVariable>
+  <UAObject NodeId="ns=1;s=MillingMachine/Equipment" BrowseName="1:Equipment" ParentNodeId="ns=1;s=MillingMachine">
+    <DisplayName>Equipment</DisplayName>
+    <Description>Equipment of the machine tool</Description>
+    <References>
+      <Reference ReferenceType="HasComponent" IsForward="false">ns=1;s=MillingMachine</Reference>
+      <Reference ReferenceType="HasTypeDefinition">i=58</Reference>
+    </References>
+  </UAObject>
+  <UAObject NodeId="ns=1;s=MillingMachine/Equipment/Tools" BrowseName="1:Tools" ParentNodeId="ns=1;s=MillingMachine/Equipment">
+    <DisplayName>Tools</DisplayName>
+    <Description>Tool magazine</Description>
+    <References>
+      <Reference ReferenceType="HasComponent" IsForward="false">ns=1;s=MillingMachine/Equipment</Reference>
+      <Reference ReferenceType="HasTypeDefinition">i=58</Reference>
+    </References>
+  </UAObject>
+  <UAVariable NodeId="ns=1;s=MillingMachine/Equipment/Tools/ActiveToolNumber" BrowseName="1:ActiveToolNumber" ParentNodeId="ns=1;s=MillingMachine/Equipment/Tools" DataType="Int32" AccessLevel="1" UserAccessLevel="1">
+    <DisplayName>ActiveToolNumber</DisplayName>
+    <Description>Number of the tool in the spindle</Description>
+    <References>
+      <Reference ReferenceType="HasComponent" IsForward="false">ns=1;s=MillingMachine/Equipment/Tools</Reference>
+      <Reference ReferenceType="HasTypeDefinition">i=63</Reference>
+    </References>
+    <Value><uax:Int32>7</uax:Int32></Value>
+  </UAVariable>
+  <UAVariable NodeId="ns=1;s=MillingMachine/Equipment/Tools/RemainingToolLife" BrowseName="1:RemainingToolLife" ParentNodeId="ns=1;s=MillingMachine/Equipment/Tools" DataType="Double" AccessLevel="1" UserAccessLevel="1">
+    <DisplayName>RemainingToolLife</DisplayName>
+    <Description>Remaining tool life of the tool in the spindle</Description>
+    <References>
+      <Reference ReferenceType="HasComponent" IsForward="false">ns=1;s=MillingMachine/Equipment/Tools</Reference>
+      <Reference ReferenceType="HasTypeDefinition">i=2368</Reference>
+      <Reference ReferenceType="HasProperty">ns=1;s=MillingMachine/Equipment/Tools/RemainingToolLife/EngineeringUnits</Reference>
+    </References>
+    <Value><uax:Double>80.0</uax:Double></Value>
+  </UAVariable>
+  <UAVariable NodeId="ns=1;s=MillingMachine/Equipment/Tools/RemainingToolLife/EngineeringUnits" BrowseName="EngineeringUnits" ParentNodeId="ns=1;s=MillingMachine/Equipment/Tools/RemainingToolLife" DataType="EUInformation">
+    <DisplayName>EngineeringUnits</DisplayName>
+    <References>
+      <Reference ReferenceType="HasProperty" IsForward="false">ns=1;s=MillingMachine/Equipment/Tools/RemainingToolLife</Reference>
+      <Reference ReferenceType="HasTypeDefinition">i=68</Reference>
+    </References>
+    <Value><uax:ExtensionObject><uax:TypeId><uax:Identifier>i=888</uax:Identifier></uax:TypeId><uax:Body><uax:EUInformation><uax:NamespaceUri>http://www.opcfoundation.org/UA/units/un/cefact</uax:NamespaceUri><uax:UnitId>20529</uax:UnitId><uax:DisplayName><uax:Locale>en</uax:Locale><uax:Text>%</uax:Text></uax:DisplayName><uax:Description><uax:Locale>en</uax:Locale><uax:Text>%</uax:Text></uax:Description></uax:EUInformation></uax:Body></uax:ExtensionObject></Value>
+  </UAVariable>
+  <UAMethod NodeId="ns=1;s=MillingMachine/Equipment/Tools/ChangeTool" BrowseName="1:ChangeTool" ParentNodeId="ns=1;s=MillingMachine/Equipment/Tools">
+    <DisplayName>ChangeTool</DisplayName>
+    <Description>Changes to the tool with the given number</Description>
+    <References>
+      <Reference ReferenceType="HasComponent" IsForward="false">ns=1;s=MillingMachine/Equipment/Tools</Reference>
+      <Reference ReferenceType="HasProperty">ns=1;s=MillingMachine/Equipment/Tools/ChangeTool/InputArguments</Reference>
+    </References>
+  </UAMethod>
+  <UAVariable NodeId="ns=1;s=MillingMachine/Equipment/Tools/ChangeTool/InputArguments" BrowseName="InputArguments" ParentNodeId="ns=1;s=MillingMachine/Equipment/Tools/ChangeTool" DataType="Argument" ValueRank="1" ArrayDimensions="1">
+    <DisplayName>InputArguments</DisplayName>
+    <References>
+      <Reference ReferenceType="HasProperty" IsForward="false">ns=1;s=MillingMachine/Equipment/Tools/ChangeTool</Reference>
+      <Reference ReferenceType="HasTypeDefinition">i=68</Reference>
+    </References>
+    <Value>
+      <uax:ListOfExtensionObject>
+        <uax:ExtensionObject><uax:TypeId><uax:Identifier>i=297</uax:Identifier></uax:TypeId><uax:Body><uax:Argument><uax:Name>toolNumber</uax:Name><uax:DataType><uax:Identifier>i=6</uax:Identifier></uax:DataType><uax:ValueRank>-1</uax:ValueRank><uax:ArrayDimensions /><uax:Description /></uax:Argument></uax:Body></uax:ExtensionObject>
+      </uax:ListOfExtensionObject>
+    </Value>
+  </UAVariable>
+  <UAObject NodeId="ns=1;s=MillingMachine/Production" BrowseName="1:Production" ParentNodeId="ns=1;s=MillingMachine">
+    <DisplayName>Production</DisplayName>
+    <Description>Production of the machine tool</Description>
+    <References>
+      <Reference ReferenceType="HasComponent" IsForward="false">ns=1;s=MillingMachine</Reference>
+      <Reference ReferenceType="HasTypeDefinition">i=58</Reference>
+    </References>
+  </UAObject>
+  <UAObject NodeId="ns=1;s=MillingMachine/Production/ActiveProgram" BrowseName="1:ActiveProgram" ParentNodeId="ns=1;s=MillingMachine/Production">
+    <DisplayName>ActiveProgram</DisplayName>
+    <Description>NC program of the channel</Description>
+    <References>
+      <Reference ReferenceType="HasComponent" IsForward="false">ns=1;s=MillingMachine/Production</Reference>
+      <Reference ReferenceType="HasTypeDefinition">i=58</Reference>
+    </References>
+  </UAObject>
+  <UAVariable NodeId="ns=1;s=MillingMachine/Production/ActiveProgram/Name" BrowseName="1:Name" ParentNodeId="ns=1;s=MillingMachine/Production/ActiveProgram" DataType="String" AccessLevel="1" UserAccessLevel="1">
+    <DisplayName>Name</DisplayName>
+    <Description>Name of the active NC program</Description>
+    <References>
+      <Reference ReferenceType="HasComponent" IsForward="false">ns=1;s=MillingMachine/Production/ActiveProgram</Reference>
+      <Reference ReferenceType="HasTypeDefinition">i=63</Reference>
+    </References>
+    <Value><uax:String>BRACKET_5X.MPF</uax:String></Value>
+  </UAVariable>
+  <UAVariable NodeId="ns=1;s=MillingMachine/Production/ActiveProgram/Running" BrowseName="1:Running" ParentNodeId="ns=1;s=MillingMachine/Production/ActiveProgram" DataType="Boolean" AccessLevel="1" UserAccessLevel="1">
+    <DisplayName>Running</DisplayName>
+    <Description>Whether the NC program is running</Description>
+    <References>
+      <Reference ReferenceType="HasComponent" IsForward="false">ns=1;s=MillingMachine/Production/ActiveProgram</Reference>
+      <Reference ReferenceType="HasTypeDefinition">i=63</Reference>
+    </References>
+    <Value><uax:Boolean>true</uax:Boolean></Value>
+  </UAVariable>
+  <UAVariable NodeId="ns=1;s=MillingMachine/Production/ActiveProgram/FeedHoldActive" BrowseName="1:FeedHoldActive" ParentNodeId="ns=1;s=MillingMachine/Production/ActiveProgram" DataType="Boolean" AccessLevel="1" UserAccessLevel="1">
+    <DisplayName>FeedHoldActive</DisplayName>
+    <Description>Whether the feed hold stops all axis movements</Description>
+    <References>
+      <Reference ReferenceType="HasComponent" IsForward="false">ns=1;s=MillingMachine/Production/ActiveProgram</Reference>
+      <Reference ReferenceType="HasTypeDefinition">i=63</Reference>
+    </References>
+    <Value><uax:Boolean>false</uax:Boolean></Value>
+  </UAVariable>
+  <UAMethod NodeId="ns=1;s=MillingMachine/Production/ActiveProgram/FeedHold" BrowseName="1:FeedHold" ParentNodeId="ns=1;s=MillingMachine/Production/ActiveProgram">
+    <DisplayName>FeedHold</DisplayName>
+    <Description>Stops all axis movements of the running program (feed hold)</Description>
+    <References>
+      <Reference ReferenceType="HasComponent" IsForward="false">ns=1;s=MillingMachine/Production/ActiveProgram</Reference>
+    </References>
+  </UAMethod>
+  <UAMethod NodeId="ns=1;s=MillingMachine/Production/ActiveProgram/Abort" BrowseName="1:Abort" ParentNodeId="ns=1;s=MillingMachine/Production/ActiveProgram">
+    <DisplayName>Abort</DisplayName>
+    <Description>Aborts the running NC program</Description>
+    <References>
+      <Reference ReferenceType="HasComponent" IsForward="false">ns=1;s=MillingMachine/Production/ActiveProgram</Reference>
+    </References>
+  </UAMethod>
+</UANodeSet>

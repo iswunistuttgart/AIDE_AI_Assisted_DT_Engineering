@@ -1,0 +1,9 @@
+binding YumiMonitoringBinding for YumiMonitoring, YumiTictactoeNodeSet {
+  Robot.state -> "ns=1;s=YuMi/State";
+  Robot.clear -> "ns=1;s=YuMi/ClearBoard" map true -> call confirmed;
+  Robot.stop -> "ns=1;s=YuMi/Stop" map true -> call confirmed;
+  Robot.restart -> "ns=1;s=YuMi/Start" map true -> call confirmed;
+  Robot.nextX -> "ns=1;s=YuMi/PlaceX" via method;
+  Robot.nextO -> "ns=1;s=YuMi/PlaceO" via method;
+  Axis3.motorTemperature -> "ns=1;s=YuMi/Axis3/MotorTemperature";
+}

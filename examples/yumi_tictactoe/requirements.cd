@@ -1,0 +1,17 @@
+/* Service requirements of the monitoring service for the YuMi tic-tac-toe demonstrator.
+   The service watches the motor temperature of axis 3 and acts only through the robot's methods. */
+classdiagram YumiMonitoring {
+
+  class Robot {
+    String state {readOnly};
+    boolean clear;
+    boolean stop;
+    boolean restart;
+    int nextX;
+    int nextO;
+  }
+
+  class Axis3 {
+    double motorTemperature in degC {readOnly};
+  }
+}

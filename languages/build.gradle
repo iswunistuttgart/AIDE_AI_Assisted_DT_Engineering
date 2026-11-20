@@ -1,0 +1,40 @@
+plugins {
+  id "java"
+  id "de.monticore.generator" version "7.9.0"
+}
+
+group = "de.aide"
+
+java {
+  toolchain { languageVersion = JavaLanguageVersion.of(21) }
+}
+
+repositories {
+  maven { url "https://nexus.se.rwth-aachen.de/content/groups/public" }
+  mavenCentral()
+}
+
+def mcVersion = "7.9.0"
+
+dependencies {
+  grammar "de.monticore:monticore-grammar:$mcVersion"
+  implementation "de.monticore:monticore-runtime:$mcVersion"
+  implementation "de.monticore:monticore-grammar:$mcVersion"
+  grammar "de.monticore.lang:cd4analysis:$mcVersion"
+  implementation "de.monticore.lang:cd4analysis:$mcVersion"
+  implementation "tech.units:indriya:2.2.4"
+  implementation "systems.uom:systems-ucum:2.2.1"
+  implementation "systems.uom:systems-quantity:2.2.1"
+  implementation "com.google.code.gson:gson:2.15.0"
+}
+
+// One self-contained jar that the Python backend calls.
+tasks.register("cliJar", Jar) {
+  archiveFileName = "dtlang.jar"
+  manifest { attributes "Main-Class": "de.aide.Cli" }
+  duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+  from sourceSets.main.output
+  dependsOn configurations.runtimeClasspath
+  from { configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) } }
+  exclude "META-INF/*.SF", "META-INF/*.DSA", "META-INF/*.RSA"
+}

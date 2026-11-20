@@ -1,0 +1,6 @@
+{
+  "order": 1,
+  "title": "Robot machine-tending cell",
+  "nodeset": "robot-cell.nodeset.xml",
+  "endpoint": "opc.tcp://opcua-robot-cell:4840/robot-cell/"
+}

@@ -1,0 +1,68 @@
+{
+  "methods": {
+    "ns=1;s=YuMi/PlaceX": [
+      {"when": {"node": "ns=1;s=YuMi/State", "equals": "idle"}, "node": "ns=1;s=YuMi/State", "value": "moving"},
+      {"when": {"node": "ns=1;s=YuMi/State", "equals": "idle"}, "node": "ns=1;s=YuMi/State", "value": "idle", "afterSeconds": 4}
+    ],
+    "ns=1;s=YuMi/PlaceO": [
+      {"when": {"node": "ns=1;s=YuMi/State", "equals": "idle"}, "node": "ns=1;s=YuMi/State", "value": "moving"},
+      {"when": {"node": "ns=1;s=YuMi/State", "equals": "idle"}, "node": "ns=1;s=YuMi/State", "value": "idle", "afterSeconds": 4}
+    ],
+    "ns=1;s=YuMi/ClearBoard": [
+      {"when": {"node": "ns=1;s=YuMi/State", "equals": "idle"}, "node": "ns=1;s=YuMi/State", "value": "moving"},
+      {"when": {"node": "ns=1;s=YuMi/State", "equals": "idle"}, "node": "ns=1;s=YuMi/State", "value": "idle", "afterSeconds": 6}
+    ],
+    "ns=1;s=YuMi/Stop": [
+      {"node": "ns=1;s=YuMi/State", "value": "stopped"}
+    ],
+    "ns=1;s=YuMi/Start": [
+      {"when": {"node": "ns=1;s=YuMi/State", "equals": "stopped"}, "node": "ns=1;s=YuMi/State", "value": "idle"}
+    ]
+  },
+  "occupancy": {
+    "occupy": {"ns=1;s=YuMi/PlaceX": "cell {0}", "ns=1;s=YuMi/PlaceO": "cell {0}"},
+    "release": ["ns=1;s=YuMi/ClearBoard"],
+    "rejected": [{"node": "ns=1;s=YuMi/State", "value": "error"}]
+  },
+  "writes": {},
+  "derived": [],
+  "noise": {
+    "periodSeconds": 10,
+    "nodes": {
+      "ns=1;s=YuMi/Axis1/MotorTemperature": 0.3,
+      "ns=1;s=YuMi/Axis2/MotorTemperature": 0.3,
+      "ns=1;s=YuMi/Axis3/MotorTemperature": 0.3,
+      "ns=1;s=YuMi/Axis4/MotorTemperature": 0.3,
+      "ns=1;s=YuMi/Axis5/MotorTemperature": 0.3,
+      "ns=1;s=YuMi/Axis6/MotorTemperature": 0.3,
+      "ns=1;s=YuMi/Axis7/MotorTemperature": 0.3
+    }
+  },
+  "scenarios": {
+    "idle": {
+      "description": "The robot is idle; play yourself with nextX, nextO, clear, stop and restart in Home Assistant.",
+      "steps": []
+    },
+    "overheat": {
+      "description": "MotorOverheat: axis 3 heats up to 84 °C, so the watchdog calls stop; it cools down to 55 °C, so the watchdog calls start.",
+      "steps": [
+        {"atSeconds": 10, "node": "ns=1;s=YuMi/Axis3/MotorTemperature", "value": 70.0},
+        {"atSeconds": 20, "node": "ns=1;s=YuMi/Axis3/MotorTemperature", "value": 84.0},
+        {"atSeconds": 60, "node": "ns=1;s=YuMi/Axis3/MotorTemperature", "value": 65.0},
+        {"atSeconds": 90, "node": "ns=1;s=YuMi/Axis3/MotorTemperature", "value": 55.0}
+      ]
+    },
+    "overheat-persists": {
+      "description": "MotorOverheat: axis 3 stays at 85 °C, so the watchdog calls stop and escalates after 10 minutes.",
+      "steps": [{"atSeconds": 10, "node": "ns=1;s=YuMi/Axis3/MotorTemperature", "value": 85.0}]
+    },
+    "error": {
+      "description": "ErrorState: the robot reports an error; the watchdog calls stop and asks the operator (Camunda Tasklist) whether to clear the board and restart the robot.",
+      "steps": [{"atSeconds": 10, "node": "ns=1;s=YuMi/State", "value": "error"}]
+    },
+    "move-stuck": {
+      "description": "MoveNotCompleted: the robot starts a move and does not complete it, so the watchdog calls stop and escalates after 30 s.",
+      "steps": [{"atSeconds": 10, "node": "ns=1;s=YuMi/State", "value": "moving"}]
+    }
+  }
+}

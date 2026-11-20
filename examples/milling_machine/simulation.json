@@ -1,0 +1,94 @@
+{
+  "methods": {
+    "ns=1;s=MillingMachine/Equipment/Tools/ChangeTool": [
+      {"node": "ns=1;s=MillingMachine/Equipment/Tools/ActiveToolNumber", "argument": 0, "afterSeconds": 8},
+      {"node": "ns=1;s=MillingMachine/Equipment/Tools/RemainingToolLife", "value": 100.0, "afterSeconds": 8}
+    ],
+    "ns=1;s=MillingMachine/Production/ActiveProgram/FeedHold": [
+      {"node": "ns=1;s=MillingMachine/Production/ActiveProgram/FeedHoldActive", "value": true},
+      {"node": "ns=1;s=MillingMachine/Monitoring/Spindle/Vibration", "value": 0.5, "afterSeconds": 3}
+    ],
+    "ns=1;s=MillingMachine/Production/ActiveProgram/Abort": [
+      {"node": "ns=1;s=MillingMachine/Production/ActiveProgram/Running", "value": false},
+      {"node": "ns=1;s=MillingMachine/Production/ActiveProgram/FeedHoldActive", "value": false},
+      {"node": "ns=1;s=MillingMachine/Monitoring/Spindle/ActualSpeed", "value": 0, "afterSeconds": 3}
+    ]
+  },
+  "writes": {
+    "ns=1;s=MillingMachine/Monitoring/MachineTool/FeedOverride": {
+      "40.0": [{"node": "ns=1;s=MillingMachine/Monitoring/Spindle/Vibration", "value": 2.0, "afterSeconds": 15}],
+      "60.0": [{"node": "ns=1;s=MillingMachine/Monitoring/Spindle/Vibration", "value": 2.5, "afterSeconds": 15}],
+      "50.0": [{"node": "ns=1;s=MillingMachine/Monitoring/Axes/C/MotorTemperature", "value": 55.0, "afterSeconds": 60}]
+    }
+  },
+  "noise": {
+    "periodSeconds": 10,
+    "nodes": {
+      "ns=1;s=MillingMachine/Monitoring/Spindle/ActualSpeed": 50,
+      "ns=1;s=MillingMachine/Monitoring/Spindle/Load": 2.0,
+      "ns=1;s=MillingMachine/Monitoring/Spindle/Vibration": 0.15,
+      "ns=1;s=MillingMachine/Monitoring/Spindle/BearingTemperature": 0.3,
+      "ns=1;s=MillingMachine/Monitoring/Axes/A/MotorTemperature": 0.3,
+      "ns=1;s=MillingMachine/Monitoring/Axes/C/MotorTemperature": 0.3,
+      "ns=1;s=MillingMachine/Monitoring/Coolant/Pressure": 0.1,
+      "ns=1;s=MillingMachine/Monitoring/MachineTool/PowerConsumption": 0.5,
+      "ns=1;s=MillingMachine/Monitoring/Axes/X/ActualPosition": 5.0,
+      "ns=1;s=MillingMachine/Monitoring/Axes/Y/ActualPosition": 5.0,
+      "ns=1;s=MillingMachine/Monitoring/Axes/Z/ActualPosition": 2.0,
+      "ns=1;s=MillingMachine/Monitoring/Axes/A/ActualPosition": 3.0,
+      "ns=1;s=MillingMachine/Monitoring/Axes/C/ActualPosition": 10.0
+    },
+    "drift": {
+      "ns=1;s=MillingMachine/Equipment/Tools/RemainingToolLife": -0.05
+    }
+  },
+  "scenarios": {
+    "nominal": {
+      "description": "Noise only; no watchdog reacts.",
+      "steps": []
+    },
+    "tool-worn": {
+      "description": "WornTool: the tool life drops to 8 %; the operator is asked (Camunda Tasklist) whether to change to tool 17. Yes changes the tool, no or no answer within two minutes escalates.",
+      "steps": [{"atSeconds": 10, "node": "ns=1;s=MillingMachine/Equipment/Tools/RemainingToolLife", "value": 8.0}]
+    },
+    "chatter-short": {
+      "description": "Chatter: 5 mm/s for 3 s only, so the watchdog ends after the 5 s check.",
+      "steps": [
+        {"atSeconds": 10, "node": "ns=1;s=MillingMachine/Monitoring/Spindle/Vibration", "value": 5.0},
+        {"atSeconds": 13, "node": "ns=1;s=MillingMachine/Monitoring/Spindle/Vibration", "value": 1.2}
+      ]
+    },
+    "chatter-moderate": {
+      "description": "Chatter: 7 mm/s; the threshold table sets a feed override of 60 % and the vibration drops to 2.5 mm/s.",
+      "steps": [{"atSeconds": 10, "node": "ns=1;s=MillingMachine/Monitoring/Spindle/Vibration", "value": 7.0}]
+    },
+    "chatter-strong": {
+      "description": "Chatter: 9 mm/s; the threshold table sets a feed override of 40 % and the vibration drops to 2 mm/s.",
+      "steps": [{"atSeconds": 10, "node": "ns=1;s=MillingMachine/Monitoring/Spindle/Vibration", "value": 9.0}]
+    },
+    "chatter-persists": {
+      "description": "Chatter: 5 mm/s; 80 % does not help, so after one minute SafeStop activates the feed hold and asks whether to abort the program.",
+      "steps": [{"atSeconds": 10, "node": "ns=1;s=MillingMachine/Monitoring/Spindle/Vibration", "value": 5.0}]
+    },
+    "rotary-table-hot": {
+      "description": "RotaryTableHeat: the rotary table reaches 75 °C; feed override 50 % and coolant boost in parallel cool it down to 55 °C.",
+      "steps": [{"atSeconds": 10, "node": "ns=1;s=MillingMachine/Monitoring/Axes/C/MotorTemperature", "value": 75.0}]
+    },
+    "rotary-table-stays-hot": {
+      "description": "RotaryTableHeat: the rotary table stays at 75 °C, so after two minutes SafeStop stops the machine.",
+      "ignoreEffects": true,
+      "steps": [{"atSeconds": 10, "node": "ns=1;s=MillingMachine/Monitoring/Axes/C/MotorTemperature", "value": 75.0}]
+    },
+    "coolant-dip": {
+      "description": "CoolantLoss: the pressure drops to 1.5 bar for 5 s only, so the watchdog ends after the 10 s check.",
+      "steps": [
+        {"atSeconds": 10, "node": "ns=1;s=MillingMachine/Monitoring/Coolant/Pressure", "value": 1.5},
+        {"atSeconds": 15, "node": "ns=1;s=MillingMachine/Monitoring/Coolant/Pressure", "value": 6.0}
+      ]
+    },
+    "coolant-loss": {
+      "description": "CoolantLoss: the pressure stays at 1.5 bar; SafeStop activates the feed hold and asks the operator. Without an answer within five minutes, the watchdog reports it.",
+      "steps": [{"atSeconds": 10, "node": "ns=1;s=MillingMachine/Monitoring/Coolant/Pressure", "value": 1.5}]
+    }
+  }
+}

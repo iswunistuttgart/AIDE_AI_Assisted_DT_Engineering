@@ -1,0 +1,18 @@
+# Secrets: only the template is versioned.
+.env
+.env.*
+!.env.example
+
+# Build output and dependencies
+__pycache__/
+*.pyc
+.venv/
+frontend/node_modules/
+frontend/dist/
+languages/.gradle/
+languages/build/
+
+# State of the running tool and of the digital twin
+generated/workspace/
+generated/runtime/
+docker/homeassistant/dt-dashboard.yaml

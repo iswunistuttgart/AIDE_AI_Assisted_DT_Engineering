@@ -1,0 +1,491 @@
+<?xml version="1.0" encoding="utf-8"?>
+<UANodeSet xmlns="http://opcfoundation.org/UA/2011/03/UANodeSet.xsd" xmlns:uax="http://opcfoundation.org/UA/2008/02/Types.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" LastModified="2026-10-31T00:00:00Z">
+  <NamespaceUris>
+    <Uri>urn:aide:robot-cell</Uri>
+  </NamespaceUris>
+  <Models>
+    <Model ModelUri="urn:aide:robot-cell" Version="1.0.0" PublicationDate="2026-10-31T00:00:00Z">
+      <RequiredModel ModelUri="http://opcfoundation.org/UA/" Version="1.04.0" PublicationDate="2019-05-01T00:00:00Z" />
+    </Model>
+  </Models>
+  <Aliases>
+    <Alias Alias="Boolean">i=1</Alias>
+    <Alias Alias="Int32">i=6</Alias>
+    <Alias Alias="UInt32">i=7</Alias>
+    <Alias Alias="Double">i=11</Alias>
+    <Alias Alias="String">i=12</Alias>
+    <Alias Alias="EUInformation">i=887</Alias>
+    <Alias Alias="Argument">i=296</Alias>
+    <Alias Alias="HasComponent">i=47</Alias>
+    <Alias Alias="HasProperty">i=46</Alias>
+    <Alias Alias="HasTypeDefinition">i=40</Alias>
+    <Alias Alias="Organizes">i=35</Alias>
+  </Aliases>
+  <UAObject NodeId="ns=1;s=Cell" BrowseName="1:Cell">
+    <DisplayName>Cell</DisplayName>
+    <Description>Robot machine-tending cell</Description>
+    <References>
+      <Reference ReferenceType="Organizes" IsForward="false">i=85</Reference>
+      <Reference ReferenceType="HasTypeDefinition">i=58</Reference>
+    </References>
+  </UAObject>
+  <UAObject NodeId="ns=1;s=Cell/CNC" BrowseName="1:CNC" ParentNodeId="ns=1;s=Cell">
+    <DisplayName>CNC</DisplayName>
+    <Description>CNC machining centre tended by the robot</Description>
+    <References>
+      <Reference ReferenceType="HasComponent" IsForward="false">ns=1;s=Cell</Reference>
+      <Reference ReferenceType="HasTypeDefinition">i=58</Reference>
+    </References>
+  </UAObject>
+  <UAObject NodeId="ns=1;s=Cell/Robot" BrowseName="1:Robot" ParentNodeId="ns=1;s=Cell">
+    <DisplayName>Robot</DisplayName>
+    <Description>Six-axis tending robot</Description>
+    <References>
+      <Reference ReferenceType="HasComponent" IsForward="false">ns=1;s=Cell</Reference>
+      <Reference ReferenceType="HasTypeDefinition">i=58</Reference>
+    </References>
+  </UAObject>
+  <UAObject NodeId="ns=1;s=Cell/Robot/Pose" BrowseName="1:Pose" ParentNodeId="ns=1;s=Cell/Robot">
+    <DisplayName>Pose</DisplayName>
+    <Description>Current tool centre point of the robot</Description>
+    <References>
+      <Reference ReferenceType="HasComponent" IsForward="false">ns=1;s=Cell/Robot</Reference>
+      <Reference ReferenceType="HasTypeDefinition">i=58</Reference>
+    </References>
+  </UAObject>
+  <UAObject NodeId="ns=1;s=Cell/Conveyor" BrowseName="1:Conveyor" ParentNodeId="ns=1;s=Cell">
+    <DisplayName>Conveyor</DisplayName>
+    <Description>Infeed conveyor for raw parts</Description>
+    <References>
+      <Reference ReferenceType="HasComponent" IsForward="false">ns=1;s=Cell</Reference>
+      <Reference ReferenceType="HasTypeDefinition">i=58</Reference>
+    </References>
+  </UAObject>
+  <UAObject NodeId="ns=1;s=Cell/Safety" BrowseName="1:Safety" ParentNodeId="ns=1;s=Cell">
+    <DisplayName>Safety</DisplayName>
+    <Description>Safety controller of the cell</Description>
+    <References>
+      <Reference ReferenceType="HasComponent" IsForward="false">ns=1;s=Cell</Reference>
+      <Reference ReferenceType="HasTypeDefinition">i=58</Reference>
+    </References>
+  </UAObject>
+  <UAObject NodeId="ns=1;s=Cell/Coolant" BrowseName="1:Coolant" ParentNodeId="ns=1;s=Cell">
+    <DisplayName>Coolant</DisplayName>
+    <Description>Coolant supply of the CNC machine</Description>
+    <References>
+      <Reference ReferenceType="HasComponent" IsForward="false">ns=1;s=Cell</Reference>
+      <Reference ReferenceType="HasTypeDefinition">i=58</Reference>
+    </References>
+  </UAObject>
+  <UAObject NodeId="ns=1;s=Cell/Power" BrowseName="1:Power" ParentNodeId="ns=1;s=Cell">
+    <DisplayName>Power</DisplayName>
+    <Description>Power meter of the cell feed</Description>
+    <References>
+      <Reference ReferenceType="HasComponent" IsForward="false">ns=1;s=Cell</Reference>
+      <Reference ReferenceType="HasTypeDefinition">i=58</Reference>
+    </References>
+  </UAObject>
+  <UAVariable NodeId="ns=1;s=Cell/CNC/SpindleTemp" BrowseName="1:SpindleTemp" ParentNodeId="ns=1;s=Cell/CNC" DataType="Double" AccessLevel="1" UserAccessLevel="1">
+    <DisplayName>SpindleTemp</DisplayName>
+    <Description>Spindle bearing temperature</Description>
+    <References>
+      <Reference ReferenceType="HasComponent" IsForward="false">ns=1;s=Cell/CNC</Reference>
+      <Reference ReferenceType="HasTypeDefinition">i=2368</Reference>
+      <Reference ReferenceType="HasProperty">ns=1;s=Cell/CNC/SpindleTemp/EngineeringUnits</Reference>
+    </References>
+    <Value><uax:Double>318.15</uax:Double></Value>
+  </UAVariable>
+  <UAVariable NodeId="ns=1;s=Cell/CNC/SpindleTemp/EngineeringUnits" BrowseName="EngineeringUnits" ParentNodeId="ns=1;s=Cell/CNC/SpindleTemp" DataType="EUInformation">
+    <DisplayName>EngineeringUnits</DisplayName>
+    <References>
+      <Reference ReferenceType="HasProperty" IsForward="false">ns=1;s=Cell/CNC/SpindleTemp</Reference>
+      <Reference ReferenceType="HasTypeDefinition">i=68</Reference>
+    </References>
+    <Value><uax:ExtensionObject><uax:TypeId><uax:Identifier>i=888</uax:Identifier></uax:TypeId><uax:Body><uax:EUInformation><uax:NamespaceUri>http://www.opcfoundation.org/UA/units/un/cefact</uax:NamespaceUri><uax:UnitId>4932940</uax:UnitId><uax:DisplayName><uax:Locale>en</uax:Locale><uax:Text>K</uax:Text></uax:DisplayName><uax:Description><uax:Locale>en</uax:Locale><uax:Text>kelvin</uax:Text></uax:Description></uax:EUInformation></uax:Body></uax:ExtensionObject></Value>
+  </UAVariable>
+  <UAVariable NodeId="ns=1;s=Cell/CNC/SpindleSpeed" BrowseName="1:SpindleSpeed" ParentNodeId="ns=1;s=Cell/CNC" DataType="Int32" AccessLevel="1" UserAccessLevel="1">
+    <DisplayName>SpindleSpeed</DisplayName>
+    <Description>Actual spindle speed</Description>
+    <References>
+      <Reference ReferenceType="HasComponent" IsForward="false">ns=1;s=Cell/CNC</Reference>
+      <Reference ReferenceType="HasTypeDefinition">i=2368</Reference>
+      <Reference ReferenceType="HasProperty">ns=1;s=Cell/CNC/SpindleSpeed/EngineeringUnits</Reference>
+    </References>
+    <Value><uax:Int32>4200</uax:Int32></Value>
+  </UAVariable>
+  <UAVariable NodeId="ns=1;s=Cell/CNC/SpindleSpeed/EngineeringUnits" BrowseName="EngineeringUnits" ParentNodeId="ns=1;s=Cell/CNC/SpindleSpeed" DataType="EUInformation">
+    <DisplayName>EngineeringUnits</DisplayName>
+    <References>
+      <Reference ReferenceType="HasProperty" IsForward="false">ns=1;s=Cell/CNC/SpindleSpeed</Reference>
+      <Reference ReferenceType="HasTypeDefinition">i=68</Reference>
+    </References>
+    <Value><uax:ExtensionObject><uax:TypeId><uax:Identifier>i=888</uax:Identifier></uax:TypeId><uax:Body><uax:EUInformation><uax:NamespaceUri>http://www.opcfoundation.org/UA/units/un/cefact</uax:NamespaceUri><uax:UnitId>5394509</uax:UnitId><uax:DisplayName><uax:Locale>en</uax:Locale><uax:Text>rpm</uax:Text></uax:DisplayName><uax:Description><uax:Locale>en</uax:Locale><uax:Text>revolutions per minute</uax:Text></uax:Description></uax:EUInformation></uax:Body></uax:ExtensionObject></Value>
+  </UAVariable>
+  <UAVariable NodeId="ns=1;s=Cell/CNC/ProgramNumber" BrowseName="1:ProgramNumber" ParentNodeId="ns=1;s=Cell/CNC" DataType="String" AccessLevel="1" UserAccessLevel="1">
+    <DisplayName>ProgramNumber</DisplayName>
+    <Description>Active NC program</Description>
+    <References>
+      <Reference ReferenceType="HasComponent" IsForward="false">ns=1;s=Cell/CNC</Reference>
+      <Reference ReferenceType="HasTypeDefinition">i=63</Reference>
+    </References>
+    <Value><uax:String>O1001</uax:String></Value>
+  </UAVariable>
+  <UAVariable NodeId="ns=1;s=Cell/CNC/CycleRunning" BrowseName="1:CycleRunning" ParentNodeId="ns=1;s=Cell/CNC" DataType="Boolean" AccessLevel="1" UserAccessLevel="1">
+    <DisplayName>CycleRunning</DisplayName>
+    <Description>Machining cycle is running</Description>
+    <References>
+      <Reference ReferenceType="HasComponent" IsForward="false">ns=1;s=Cell/CNC</Reference>
+      <Reference ReferenceType="HasTypeDefinition">i=63</Reference>
+    </References>
+    <Value><uax:Boolean>false</uax:Boolean></Value>
+  </UAVariable>
+  <UAVariable NodeId="ns=1;s=Cell/Robot/MotorTemp" BrowseName="1:MotorTemp" ParentNodeId="ns=1;s=Cell/Robot" DataType="Double" AccessLevel="1" UserAccessLevel="1">
+    <DisplayName>MotorTemp</DisplayName>
+    <Description>Temperature of the axis 2 motor</Description>
+    <References>
+      <Reference ReferenceType="HasComponent" IsForward="false">ns=1;s=Cell/Robot</Reference>
+      <Reference ReferenceType="HasTypeDefinition">i=2368</Reference>
+      <Reference ReferenceType="HasProperty">ns=1;s=Cell/Robot/MotorTemp/EngineeringUnits</Reference>
+    </References>
+    <Value><uax:Double>41.0</uax:Double></Value>
+  </UAVariable>
+  <UAVariable NodeId="ns=1;s=Cell/Robot/MotorTemp/EngineeringUnits" BrowseName="EngineeringUnits" ParentNodeId="ns=1;s=Cell/Robot/MotorTemp" DataType="EUInformation">
+    <DisplayName>EngineeringUnits</DisplayName>
+    <References>
+      <Reference ReferenceType="HasProperty" IsForward="false">ns=1;s=Cell/Robot/MotorTemp</Reference>
+      <Reference ReferenceType="HasTypeDefinition">i=68</Reference>
+    </References>
+    <Value><uax:ExtensionObject><uax:TypeId><uax:Identifier>i=888</uax:Identifier></uax:TypeId><uax:Body><uax:EUInformation><uax:NamespaceUri>http://www.opcfoundation.org/UA/units/un/cefact</uax:NamespaceUri><uax:UnitId>4408652</uax:UnitId><uax:DisplayName><uax:Locale>en</uax:Locale><uax:Text>°C</uax:Text></uax:DisplayName><uax:Description><uax:Locale>en</uax:Locale><uax:Text>degree Celsius</uax:Text></uax:Description></uax:EUInformation></uax:Body></uax:ExtensionObject></Value>
+  </UAVariable>
+  <UAVariable NodeId="ns=1;s=Cell/Robot/CycleTime" BrowseName="1:CycleTime" ParentNodeId="ns=1;s=Cell/Robot" DataType="Double" AccessLevel="1" UserAccessLevel="1">
+    <DisplayName>CycleTime</DisplayName>
+    <Description>Duration of the last tending cycle</Description>
+    <References>
+      <Reference ReferenceType="HasComponent" IsForward="false">ns=1;s=Cell/Robot</Reference>
+      <Reference ReferenceType="HasTypeDefinition">i=2368</Reference>
+      <Reference ReferenceType="HasProperty">ns=1;s=Cell/Robot/CycleTime/EngineeringUnits</Reference>
+    </References>
+    <Value><uax:Double>14200.0</uax:Double></Value>
+  </UAVariable>
+  <UAVariable NodeId="ns=1;s=Cell/Robot/CycleTime/EngineeringUnits" BrowseName="EngineeringUnits" ParentNodeId="ns=1;s=Cell/Robot/CycleTime" DataType="EUInformation">
+    <DisplayName>EngineeringUnits</DisplayName>
+    <References>
+      <Reference ReferenceType="HasProperty" IsForward="false">ns=1;s=Cell/Robot/CycleTime</Reference>
+      <Reference ReferenceType="HasTypeDefinition">i=68</Reference>
+    </References>
+    <Value><uax:ExtensionObject><uax:TypeId><uax:Identifier>i=888</uax:Identifier></uax:TypeId><uax:Body><uax:EUInformation><uax:NamespaceUri>http://www.opcfoundation.org/UA/units/un/cefact</uax:NamespaceUri><uax:UnitId>4403766</uax:UnitId><uax:DisplayName><uax:Locale>en</uax:Locale><uax:Text>ms</uax:Text></uax:DisplayName><uax:Description><uax:Locale>en</uax:Locale><uax:Text>millisecond</uax:Text></uax:Description></uax:EUInformation></uax:Body></uax:ExtensionObject></Value>
+  </UAVariable>
+  <UAVariable NodeId="ns=1;s=Cell/Robot/GripForce" BrowseName="1:GripForce" ParentNodeId="ns=1;s=Cell/Robot" DataType="Double" AccessLevel="1" UserAccessLevel="1">
+    <DisplayName>GripForce</DisplayName>
+    <Description>Measured gripper force</Description>
+    <References>
+      <Reference ReferenceType="HasComponent" IsForward="false">ns=1;s=Cell/Robot</Reference>
+      <Reference ReferenceType="HasTypeDefinition">i=2368</Reference>
+      <Reference ReferenceType="HasProperty">ns=1;s=Cell/Robot/GripForce/EngineeringUnits</Reference>
+    </References>
+    <Value><uax:Double>120.0</uax:Double></Value>
+  </UAVariable>
+  <UAVariable NodeId="ns=1;s=Cell/Robot/GripForce/EngineeringUnits" BrowseName="EngineeringUnits" ParentNodeId="ns=1;s=Cell/Robot/GripForce" DataType="EUInformation">
+    <DisplayName>EngineeringUnits</DisplayName>
+    <References>
+      <Reference ReferenceType="HasProperty" IsForward="false">ns=1;s=Cell/Robot/GripForce</Reference>
+      <Reference ReferenceType="HasTypeDefinition">i=68</Reference>
+    </References>
+    <Value><uax:ExtensionObject><uax:TypeId><uax:Identifier>i=888</uax:Identifier></uax:TypeId><uax:Body><uax:EUInformation><uax:NamespaceUri>http://www.opcfoundation.org/UA/units/un/cefact</uax:NamespaceUri><uax:UnitId>5129559</uax:UnitId><uax:DisplayName><uax:Locale>en</uax:Locale><uax:Text>N</uax:Text></uax:DisplayName><uax:Description><uax:Locale>en</uax:Locale><uax:Text>newton</uax:Text></uax:Description></uax:EUInformation></uax:Body></uax:ExtensionObject></Value>
+  </UAVariable>
+  <UAVariable NodeId="ns=1;s=Cell/Robot/Moving" BrowseName="1:Moving" ParentNodeId="ns=1;s=Cell/Robot" DataType="Boolean" AccessLevel="1" UserAccessLevel="1">
+    <DisplayName>Moving</DisplayName>
+    <Description>Robot is in motion</Description>
+    <References>
+      <Reference ReferenceType="HasComponent" IsForward="false">ns=1;s=Cell/Robot</Reference>
+      <Reference ReferenceType="HasTypeDefinition">i=63</Reference>
+    </References>
+    <Value><uax:Boolean>false</uax:Boolean></Value>
+  </UAVariable>
+  <UAVariable NodeId="ns=1;s=Cell/Robot/SpeedOverride" BrowseName="1:SpeedOverride" ParentNodeId="ns=1;s=Cell/Robot" DataType="Double" AccessLevel="3" UserAccessLevel="3">
+    <DisplayName>SpeedOverride</DisplayName>
+    <Description>Program speed override</Description>
+    <References>
+      <Reference ReferenceType="HasComponent" IsForward="false">ns=1;s=Cell/Robot</Reference>
+      <Reference ReferenceType="HasTypeDefinition">i=2368</Reference>
+      <Reference ReferenceType="HasProperty">ns=1;s=Cell/Robot/SpeedOverride/EngineeringUnits</Reference>
+    </References>
+    <Value><uax:Double>100.0</uax:Double></Value>
+  </UAVariable>
+  <UAVariable NodeId="ns=1;s=Cell/Robot/SpeedOverride/EngineeringUnits" BrowseName="EngineeringUnits" ParentNodeId="ns=1;s=Cell/Robot/SpeedOverride" DataType="EUInformation">
+    <DisplayName>EngineeringUnits</DisplayName>
+    <References>
+      <Reference ReferenceType="HasProperty" IsForward="false">ns=1;s=Cell/Robot/SpeedOverride</Reference>
+      <Reference ReferenceType="HasTypeDefinition">i=68</Reference>
+    </References>
+    <Value><uax:ExtensionObject><uax:TypeId><uax:Identifier>i=888</uax:Identifier></uax:TypeId><uax:Body><uax:EUInformation><uax:NamespaceUri>http://www.opcfoundation.org/UA/units/un/cefact</uax:NamespaceUri><uax:UnitId>20529</uax:UnitId><uax:DisplayName><uax:Locale>en</uax:Locale><uax:Text>%</uax:Text></uax:DisplayName><uax:Description><uax:Locale>en</uax:Locale><uax:Text>percent</uax:Text></uax:Description></uax:EUInformation></uax:Body></uax:ExtensionObject></Value>
+  </UAVariable>
+  <UAVariable NodeId="ns=1;s=Cell/Robot/Pose/X" BrowseName="1:X" ParentNodeId="ns=1;s=Cell/Robot/Pose" DataType="Double" AccessLevel="1" UserAccessLevel="1">
+    <DisplayName>X</DisplayName>
+    <Description>Tool centre point X</Description>
+    <References>
+      <Reference ReferenceType="HasComponent" IsForward="false">ns=1;s=Cell/Robot/Pose</Reference>
+      <Reference ReferenceType="HasTypeDefinition">i=2368</Reference>
+      <Reference ReferenceType="HasProperty">ns=1;s=Cell/Robot/Pose/X/EngineeringUnits</Reference>
+    </References>
+    <Value><uax:Double>450.0</uax:Double></Value>
+  </UAVariable>
+  <UAVariable NodeId="ns=1;s=Cell/Robot/Pose/X/EngineeringUnits" BrowseName="EngineeringUnits" ParentNodeId="ns=1;s=Cell/Robot/Pose/X" DataType="EUInformation">
+    <DisplayName>EngineeringUnits</DisplayName>
+    <References>
+      <Reference ReferenceType="HasProperty" IsForward="false">ns=1;s=Cell/Robot/Pose/X</Reference>
+      <Reference ReferenceType="HasTypeDefinition">i=68</Reference>
+    </References>
+    <Value><uax:ExtensionObject><uax:TypeId><uax:Identifier>i=888</uax:Identifier></uax:TypeId><uax:Body><uax:EUInformation><uax:NamespaceUri>http://www.opcfoundation.org/UA/units/un/cefact</uax:NamespaceUri><uax:UnitId>5066068</uax:UnitId><uax:DisplayName><uax:Locale>en</uax:Locale><uax:Text>mm</uax:Text></uax:DisplayName><uax:Description><uax:Locale>en</uax:Locale><uax:Text>millimetre</uax:Text></uax:Description></uax:EUInformation></uax:Body></uax:ExtensionObject></Value>
+  </UAVariable>
+  <UAVariable NodeId="ns=1;s=Cell/Robot/Pose/Y" BrowseName="1:Y" ParentNodeId="ns=1;s=Cell/Robot/Pose" DataType="Double" AccessLevel="1" UserAccessLevel="1">
+    <DisplayName>Y</DisplayName>
+    <Description>Tool centre point Y</Description>
+    <References>
+      <Reference ReferenceType="HasComponent" IsForward="false">ns=1;s=Cell/Robot/Pose</Reference>
+      <Reference ReferenceType="HasTypeDefinition">i=2368</Reference>
+      <Reference ReferenceType="HasProperty">ns=1;s=Cell/Robot/Pose/Y/EngineeringUnits</Reference>
+    </References>
+    <Value><uax:Double>0.0</uax:Double></Value>
+  </UAVariable>
+  <UAVariable NodeId="ns=1;s=Cell/Robot/Pose/Y/EngineeringUnits" BrowseName="EngineeringUnits" ParentNodeId="ns=1;s=Cell/Robot/Pose/Y" DataType="EUInformation">
+    <DisplayName>EngineeringUnits</DisplayName>
+    <References>
+      <Reference ReferenceType="HasProperty" IsForward="false">ns=1;s=Cell/Robot/Pose/Y</Reference>
+      <Reference ReferenceType="HasTypeDefinition">i=68</Reference>
+    </References>
+    <Value><uax:ExtensionObject><uax:TypeId><uax:Identifier>i=888</uax:Identifier></uax:TypeId><uax:Body><uax:EUInformation><uax:NamespaceUri>http://www.opcfoundation.org/UA/units/un/cefact</uax:NamespaceUri><uax:UnitId>5066068</uax:UnitId><uax:DisplayName><uax:Locale>en</uax:Locale><uax:Text>mm</uax:Text></uax:DisplayName><uax:Description><uax:Locale>en</uax:Locale><uax:Text>millimetre</uax:Text></uax:Description></uax:EUInformation></uax:Body></uax:ExtensionObject></Value>
+  </UAVariable>
+  <UAVariable NodeId="ns=1;s=Cell/Robot/Pose/Z" BrowseName="1:Z" ParentNodeId="ns=1;s=Cell/Robot/Pose" DataType="Double" AccessLevel="1" UserAccessLevel="1">
+    <DisplayName>Z</DisplayName>
+    <Description>Tool centre point Z</Description>
+    <References>
+      <Reference ReferenceType="HasComponent" IsForward="false">ns=1;s=Cell/Robot/Pose</Reference>
+      <Reference ReferenceType="HasTypeDefinition">i=2368</Reference>
+      <Reference ReferenceType="HasProperty">ns=1;s=Cell/Robot/Pose/Z/EngineeringUnits</Reference>
+    </References>
+    <Value><uax:Double>820.0</uax:Double></Value>
+  </UAVariable>
+  <UAVariable NodeId="ns=1;s=Cell/Robot/Pose/Z/EngineeringUnits" BrowseName="EngineeringUnits" ParentNodeId="ns=1;s=Cell/Robot/Pose/Z" DataType="EUInformation">
+    <DisplayName>EngineeringUnits</DisplayName>
+    <References>
+      <Reference ReferenceType="HasProperty" IsForward="false">ns=1;s=Cell/Robot/Pose/Z</Reference>
+      <Reference ReferenceType="HasTypeDefinition">i=68</Reference>
+    </References>
+    <Value><uax:ExtensionObject><uax:TypeId><uax:Identifier>i=888</uax:Identifier></uax:TypeId><uax:Body><uax:EUInformation><uax:NamespaceUri>http://www.opcfoundation.org/UA/units/un/cefact</uax:NamespaceUri><uax:UnitId>5066068</uax:UnitId><uax:DisplayName><uax:Locale>en</uax:Locale><uax:Text>mm</uax:Text></uax:DisplayName><uax:Description><uax:Locale>en</uax:Locale><uax:Text>millimetre</uax:Text></uax:Description></uax:EUInformation></uax:Body></uax:ExtensionObject></Value>
+  </UAVariable>
+  <UAVariable NodeId="ns=1;s=Cell/Conveyor/MotorCurrent" BrowseName="1:MotorCurrent" ParentNodeId="ns=1;s=Cell/Conveyor" DataType="Double" AccessLevel="1" UserAccessLevel="1">
+    <DisplayName>MotorCurrent</DisplayName>
+    <Description>Drive motor current</Description>
+    <References>
+      <Reference ReferenceType="HasComponent" IsForward="false">ns=1;s=Cell/Conveyor</Reference>
+      <Reference ReferenceType="HasTypeDefinition">i=2368</Reference>
+      <Reference ReferenceType="HasProperty">ns=1;s=Cell/Conveyor/MotorCurrent/EngineeringUnits</Reference>
+    </References>
+    <Value><uax:Double>2.1</uax:Double></Value>
+  </UAVariable>
+  <UAVariable NodeId="ns=1;s=Cell/Conveyor/MotorCurrent/EngineeringUnits" BrowseName="EngineeringUnits" ParentNodeId="ns=1;s=Cell/Conveyor/MotorCurrent" DataType="EUInformation">
+    <DisplayName>EngineeringUnits</DisplayName>
+    <References>
+      <Reference ReferenceType="HasProperty" IsForward="false">ns=1;s=Cell/Conveyor/MotorCurrent</Reference>
+      <Reference ReferenceType="HasTypeDefinition">i=68</Reference>
+    </References>
+    <Value><uax:ExtensionObject><uax:TypeId><uax:Identifier>i=888</uax:Identifier></uax:TypeId><uax:Body><uax:EUInformation><uax:NamespaceUri>http://www.opcfoundation.org/UA/units/un/cefact</uax:NamespaceUri><uax:UnitId>4279632</uax:UnitId><uax:DisplayName><uax:Locale>en</uax:Locale><uax:Text>A</uax:Text></uax:DisplayName><uax:Description><uax:Locale>en</uax:Locale><uax:Text>ampere</uax:Text></uax:Description></uax:EUInformation></uax:Body></uax:ExtensionObject></Value>
+  </UAVariable>
+  <UAVariable NodeId="ns=1;s=Cell/Conveyor/TargetSpeed" BrowseName="1:TargetSpeed" ParentNodeId="ns=1;s=Cell/Conveyor" DataType="Double" AccessLevel="3" UserAccessLevel="3">
+    <DisplayName>TargetSpeed</DisplayName>
+    <Description>Belt speed set point</Description>
+    <References>
+      <Reference ReferenceType="HasComponent" IsForward="false">ns=1;s=Cell/Conveyor</Reference>
+      <Reference ReferenceType="HasTypeDefinition">i=2368</Reference>
+      <Reference ReferenceType="HasProperty">ns=1;s=Cell/Conveyor/TargetSpeed/EngineeringUnits</Reference>
+    </References>
+    <Value><uax:Double>120.0</uax:Double></Value>
+  </UAVariable>
+  <UAVariable NodeId="ns=1;s=Cell/Conveyor/TargetSpeed/EngineeringUnits" BrowseName="EngineeringUnits" ParentNodeId="ns=1;s=Cell/Conveyor/TargetSpeed" DataType="EUInformation">
+    <DisplayName>EngineeringUnits</DisplayName>
+    <References>
+      <Reference ReferenceType="HasProperty" IsForward="false">ns=1;s=Cell/Conveyor/TargetSpeed</Reference>
+      <Reference ReferenceType="HasTypeDefinition">i=68</Reference>
+    </References>
+    <Value><uax:ExtensionObject><uax:TypeId><uax:Identifier>i=888</uax:Identifier></uax:TypeId><uax:Body><uax:EUInformation><uax:NamespaceUri>http://www.opcfoundation.org/UA/units/un/cefact</uax:NamespaceUri><uax:UnitId>4403510</uax:UnitId><uax:DisplayName><uax:Locale>en</uax:Locale><uax:Text>mm/s</uax:Text></uax:DisplayName><uax:Description><uax:Locale>en</uax:Locale><uax:Text>millimetre per second</uax:Text></uax:Description></uax:EUInformation></uax:Body></uax:ExtensionObject></Value>
+  </UAVariable>
+  <UAVariable NodeId="ns=1;s=Cell/Conveyor/RunCommand" BrowseName="1:RunCommand" ParentNodeId="ns=1;s=Cell/Conveyor" DataType="Int32" AccessLevel="3" UserAccessLevel="3">
+    <DisplayName>RunCommand</DisplayName>
+    <Description>Drive run command (0 = stop, 1 = run)</Description>
+    <References>
+      <Reference ReferenceType="HasComponent" IsForward="false">ns=1;s=Cell/Conveyor</Reference>
+      <Reference ReferenceType="HasTypeDefinition">i=63</Reference>
+    </References>
+    <Value><uax:Int32>1</uax:Int32></Value>
+  </UAVariable>
+  <UAVariable NodeId="ns=1;s=Cell/Safety/EmergencyStopActive" BrowseName="1:EmergencyStopActive" ParentNodeId="ns=1;s=Cell/Safety" DataType="Boolean" AccessLevel="1" UserAccessLevel="1">
+    <DisplayName>EmergencyStopActive</DisplayName>
+    <Description>Emergency stop circuit is open</Description>
+    <References>
+      <Reference ReferenceType="HasComponent" IsForward="false">ns=1;s=Cell/Safety</Reference>
+      <Reference ReferenceType="HasTypeDefinition">i=63</Reference>
+    </References>
+    <Value><uax:Boolean>false</uax:Boolean></Value>
+  </UAVariable>
+  <UAVariable NodeId="ns=1;s=Cell/Coolant/Temperature" BrowseName="1:Temperature" ParentNodeId="ns=1;s=Cell/Coolant" DataType="Double" AccessLevel="1" UserAccessLevel="1">
+    <DisplayName>Temperature</DisplayName>
+    <Description>Coolant temperature</Description>
+    <References>
+      <Reference ReferenceType="HasComponent" IsForward="false">ns=1;s=Cell/Coolant</Reference>
+      <Reference ReferenceType="HasTypeDefinition">i=2368</Reference>
+      <Reference ReferenceType="HasProperty">ns=1;s=Cell/Coolant/Temperature/EngineeringUnits</Reference>
+    </References>
+    <Value><uax:Double>22.0</uax:Double></Value>
+  </UAVariable>
+  <UAVariable NodeId="ns=1;s=Cell/Coolant/Temperature/EngineeringUnits" BrowseName="EngineeringUnits" ParentNodeId="ns=1;s=Cell/Coolant/Temperature" DataType="EUInformation">
+    <DisplayName>EngineeringUnits</DisplayName>
+    <References>
+      <Reference ReferenceType="HasProperty" IsForward="false">ns=1;s=Cell/Coolant/Temperature</Reference>
+      <Reference ReferenceType="HasTypeDefinition">i=68</Reference>
+    </References>
+    <Value><uax:ExtensionObject><uax:TypeId><uax:Identifier>i=888</uax:Identifier></uax:TypeId><uax:Body><uax:EUInformation><uax:NamespaceUri>http://www.opcfoundation.org/UA/units/un/cefact</uax:NamespaceUri><uax:UnitId>4408652</uax:UnitId><uax:DisplayName><uax:Locale>en</uax:Locale><uax:Text>°C</uax:Text></uax:DisplayName><uax:Description><uax:Locale>en</uax:Locale><uax:Text>degree Celsius</uax:Text></uax:Description></uax:EUInformation></uax:Body></uax:ExtensionObject></Value>
+  </UAVariable>
+  <UAVariable NodeId="ns=1;s=Cell/Coolant/Pressure" BrowseName="1:Pressure" ParentNodeId="ns=1;s=Cell/Coolant" DataType="Double" AccessLevel="1" UserAccessLevel="1">
+    <DisplayName>Pressure</DisplayName>
+    <Description>Coolant pressure</Description>
+    <References>
+      <Reference ReferenceType="HasComponent" IsForward="false">ns=1;s=Cell/Coolant</Reference>
+      <Reference ReferenceType="HasTypeDefinition">i=2368</Reference>
+      <Reference ReferenceType="HasProperty">ns=1;s=Cell/Coolant/Pressure/EngineeringUnits</Reference>
+    </References>
+    <Value><uax:Double>4.5</uax:Double></Value>
+  </UAVariable>
+  <UAVariable NodeId="ns=1;s=Cell/Coolant/Pressure/EngineeringUnits" BrowseName="EngineeringUnits" ParentNodeId="ns=1;s=Cell/Coolant/Pressure" DataType="EUInformation">
+    <DisplayName>EngineeringUnits</DisplayName>
+    <References>
+      <Reference ReferenceType="HasProperty" IsForward="false">ns=1;s=Cell/Coolant/Pressure</Reference>
+      <Reference ReferenceType="HasTypeDefinition">i=68</Reference>
+    </References>
+    <Value><uax:ExtensionObject><uax:TypeId><uax:Identifier>i=888</uax:Identifier></uax:TypeId><uax:Body><uax:EUInformation><uax:NamespaceUri>http://www.opcfoundation.org/UA/units/un/cefact</uax:NamespaceUri><uax:UnitId>4342098</uax:UnitId><uax:DisplayName><uax:Locale>en</uax:Locale><uax:Text>bar</uax:Text></uax:DisplayName><uax:Description><uax:Locale>en</uax:Locale><uax:Text>bar</uax:Text></uax:Description></uax:EUInformation></uax:Body></uax:ExtensionObject></Value>
+  </UAVariable>
+  <UAVariable NodeId="ns=1;s=Cell/Coolant/PumpCommand" BrowseName="1:PumpCommand" ParentNodeId="ns=1;s=Cell/Coolant" DataType="Int32" AccessLevel="3" UserAccessLevel="3">
+    <DisplayName>PumpCommand</DisplayName>
+    <Description>Coolant pump command (0 = off, 1 = on)</Description>
+    <References>
+      <Reference ReferenceType="HasComponent" IsForward="false">ns=1;s=Cell/Coolant</Reference>
+      <Reference ReferenceType="HasTypeDefinition">i=63</Reference>
+    </References>
+    <Value><uax:Int32>1</uax:Int32></Value>
+  </UAVariable>
+  <UAVariable NodeId="ns=1;s=Cell/Power/PowerL1" BrowseName="1:PowerL1" ParentNodeId="ns=1;s=Cell/Power" DataType="Double" AccessLevel="1" UserAccessLevel="1">
+    <DisplayName>PowerL1</DisplayName>
+    <Description>Active power of phase L1</Description>
+    <References>
+      <Reference ReferenceType="HasComponent" IsForward="false">ns=1;s=Cell/Power</Reference>
+      <Reference ReferenceType="HasTypeDefinition">i=2368</Reference>
+      <Reference ReferenceType="HasProperty">ns=1;s=Cell/Power/PowerL1/EngineeringUnits</Reference>
+    </References>
+    <Value><uax:Double>3.1</uax:Double></Value>
+  </UAVariable>
+  <UAVariable NodeId="ns=1;s=Cell/Power/PowerL1/EngineeringUnits" BrowseName="EngineeringUnits" ParentNodeId="ns=1;s=Cell/Power/PowerL1" DataType="EUInformation">
+    <DisplayName>EngineeringUnits</DisplayName>
+    <References>
+      <Reference ReferenceType="HasProperty" IsForward="false">ns=1;s=Cell/Power/PowerL1</Reference>
+      <Reference ReferenceType="HasTypeDefinition">i=68</Reference>
+    </References>
+    <Value><uax:ExtensionObject><uax:TypeId><uax:Identifier>i=888</uax:Identifier></uax:TypeId><uax:Body><uax:EUInformation><uax:NamespaceUri>http://www.opcfoundation.org/UA/units/un/cefact</uax:NamespaceUri><uax:UnitId>4937556</uax:UnitId><uax:DisplayName><uax:Locale>en</uax:Locale><uax:Text>kW</uax:Text></uax:DisplayName><uax:Description><uax:Locale>en</uax:Locale><uax:Text>kilowatt</uax:Text></uax:Description></uax:EUInformation></uax:Body></uax:ExtensionObject></Value>
+  </UAVariable>
+  <UAVariable NodeId="ns=1;s=Cell/Power/PowerL2" BrowseName="1:PowerL2" ParentNodeId="ns=1;s=Cell/Power" DataType="Double" AccessLevel="1" UserAccessLevel="1">
+    <DisplayName>PowerL2</DisplayName>
+    <Description>Active power of phase L2</Description>
+    <References>
+      <Reference ReferenceType="HasComponent" IsForward="false">ns=1;s=Cell/Power</Reference>
+      <Reference ReferenceType="HasTypeDefinition">i=2368</Reference>
+      <Reference ReferenceType="HasProperty">ns=1;s=Cell/Power/PowerL2/EngineeringUnits</Reference>
+    </References>
+    <Value><uax:Double>2.9</uax:Double></Value>
+  </UAVariable>
+  <UAVariable NodeId="ns=1;s=Cell/Power/PowerL2/EngineeringUnits" BrowseName="EngineeringUnits" ParentNodeId="ns=1;s=Cell/Power/PowerL2" DataType="EUInformation">
+    <DisplayName>EngineeringUnits</DisplayName>
+    <References>
+      <Reference ReferenceType="HasProperty" IsForward="false">ns=1;s=Cell/Power/PowerL2</Reference>
+      <Reference ReferenceType="HasTypeDefinition">i=68</Reference>
+    </References>
+    <Value><uax:ExtensionObject><uax:TypeId><uax:Identifier>i=888</uax:Identifier></uax:TypeId><uax:Body><uax:EUInformation><uax:NamespaceUri>http://www.opcfoundation.org/UA/units/un/cefact</uax:NamespaceUri><uax:UnitId>4937556</uax:UnitId><uax:DisplayName><uax:Locale>en</uax:Locale><uax:Text>kW</uax:Text></uax:DisplayName><uax:Description><uax:Locale>en</uax:Locale><uax:Text>kilowatt</uax:Text></uax:Description></uax:EUInformation></uax:Body></uax:ExtensionObject></Value>
+  </UAVariable>
+  <UAVariable NodeId="ns=1;s=Cell/Power/PowerL3" BrowseName="1:PowerL3" ParentNodeId="ns=1;s=Cell/Power" DataType="Double" AccessLevel="1" UserAccessLevel="1">
+    <DisplayName>PowerL3</DisplayName>
+    <Description>Active power of phase L3</Description>
+    <References>
+      <Reference ReferenceType="HasComponent" IsForward="false">ns=1;s=Cell/Power</Reference>
+      <Reference ReferenceType="HasTypeDefinition">i=2368</Reference>
+      <Reference ReferenceType="HasProperty">ns=1;s=Cell/Power/PowerL3/EngineeringUnits</Reference>
+    </References>
+    <Value><uax:Double>3.0</uax:Double></Value>
+  </UAVariable>
+  <UAVariable NodeId="ns=1;s=Cell/Power/PowerL3/EngineeringUnits" BrowseName="EngineeringUnits" ParentNodeId="ns=1;s=Cell/Power/PowerL3" DataType="EUInformation">
+    <DisplayName>EngineeringUnits</DisplayName>
+    <References>
+      <Reference ReferenceType="HasProperty" IsForward="false">ns=1;s=Cell/Power/PowerL3</Reference>
+      <Reference ReferenceType="HasTypeDefinition">i=68</Reference>
+    </References>
+    <Value><uax:ExtensionObject><uax:TypeId><uax:Identifier>i=888</uax:Identifier></uax:TypeId><uax:Body><uax:EUInformation><uax:NamespaceUri>http://www.opcfoundation.org/UA/units/un/cefact</uax:NamespaceUri><uax:UnitId>4937556</uax:UnitId><uax:DisplayName><uax:Locale>en</uax:Locale><uax:Text>kW</uax:Text></uax:DisplayName><uax:Description><uax:Locale>en</uax:Locale><uax:Text>kilowatt</uax:Text></uax:Description></uax:EUInformation></uax:Body></uax:ExtensionObject></Value>
+  </UAVariable>
+  <UAMethod NodeId="ns=1;s=Cell/Safety/SetEmergencyStop" BrowseName="1:SetEmergencyStop" ParentNodeId="ns=1;s=Cell/Safety">
+    <DisplayName>SetEmergencyStop</DisplayName>
+    <Description>Opens (true) or resets (false) the emergency stop circuit</Description>
+    <References>
+      <Reference ReferenceType="HasComponent" IsForward="false">ns=1;s=Cell/Safety</Reference>
+      <Reference ReferenceType="HasProperty">ns=1;s=Cell/Safety/SetEmergencyStop/InputArguments</Reference>
+    </References>
+  </UAMethod>
+  <UAVariable NodeId="ns=1;s=Cell/Safety/SetEmergencyStop/InputArguments" BrowseName="InputArguments" ParentNodeId="ns=1;s=Cell/Safety/SetEmergencyStop" DataType="Argument" ValueRank="1" ArrayDimensions="1">
+    <DisplayName>InputArguments</DisplayName>
+    <References>
+      <Reference ReferenceType="HasProperty" IsForward="false">ns=1;s=Cell/Safety/SetEmergencyStop</Reference>
+      <Reference ReferenceType="HasTypeDefinition">i=68</Reference>
+    </References>
+    <Value>
+      <uax:ListOfExtensionObject>
+        <uax:ExtensionObject><uax:TypeId><uax:Identifier>i=297</uax:Identifier></uax:TypeId><uax:Body><uax:Argument><uax:Name>active</uax:Name><uax:DataType><uax:Identifier>i=1</uax:Identifier></uax:DataType><uax:ValueRank>-1</uax:ValueRank><uax:ArrayDimensions /><uax:Description /></uax:Argument></uax:Body></uax:ExtensionObject>
+      </uax:ListOfExtensionObject>
+    </Value>
+  </UAVariable>
+  <UAMethod NodeId="ns=1;s=Cell/Robot/StopMotion" BrowseName="1:StopMotion" ParentNodeId="ns=1;s=Cell/Robot">
+    <DisplayName>StopMotion</DisplayName>
+    <Description>Stops robot motion</Description>
+    <References>
+      <Reference ReferenceType="HasComponent" IsForward="false">ns=1;s=Cell/Robot</Reference>
+    </References>
+  </UAMethod>
+  <UAMethod NodeId="ns=1;s=Cell/Robot/ResumeMotion" BrowseName="1:ResumeMotion" ParentNodeId="ns=1;s=Cell/Robot">
+    <DisplayName>ResumeMotion</DisplayName>
+    <Description>Resumes robot motion after a stop</Description>
+    <References>
+      <Reference ReferenceType="HasComponent" IsForward="false">ns=1;s=Cell/Robot</Reference>
+    </References>
+  </UAMethod>
+  <UAMethod NodeId="ns=1;s=Cell/Robot/GetBatteryLevel" BrowseName="1:GetBatteryLevel" ParentNodeId="ns=1;s=Cell/Robot">
+    <DisplayName>GetBatteryLevel</DisplayName>
+    <Description>Returns the charge of the encoder backup battery in percent</Description>
+    <References>
+      <Reference ReferenceType="HasComponent" IsForward="false">ns=1;s=Cell/Robot</Reference>
+      <Reference ReferenceType="HasProperty">ns=1;s=Cell/Robot/GetBatteryLevel/OutputArguments</Reference>
+    </References>
+  </UAMethod>
+  <UAVariable NodeId="ns=1;s=Cell/Robot/GetBatteryLevel/OutputArguments" BrowseName="OutputArguments" ParentNodeId="ns=1;s=Cell/Robot/GetBatteryLevel" DataType="Argument" ValueRank="1" ArrayDimensions="1">
+    <DisplayName>OutputArguments</DisplayName>
+    <References>
+      <Reference ReferenceType="HasProperty" IsForward="false">ns=1;s=Cell/Robot/GetBatteryLevel</Reference>
+      <Reference ReferenceType="HasTypeDefinition">i=68</Reference>
+    </References>
+    <Value>
+      <uax:ListOfExtensionObject>
+        <uax:ExtensionObject><uax:TypeId><uax:Identifier>i=297</uax:Identifier></uax:TypeId><uax:Body><uax:Argument><uax:Name>level</uax:Name><uax:DataType><uax:Identifier>i=11</uax:Identifier></uax:DataType><uax:ValueRank>-1</uax:ValueRank><uax:ArrayDimensions /><uax:Description /></uax:Argument></uax:Body></uax:ExtensionObject>
+      </uax:ListOfExtensionObject>
+    </Value>
+  </UAVariable>
+  <UAMethod NodeId="ns=1;s=Cell/CNC/StartCycle" BrowseName="1:StartCycle" ParentNodeId="ns=1;s=Cell/CNC">
+    <DisplayName>StartCycle</DisplayName>
+    <Description>Starts the machining cycle</Description>
+    <References>
+      <Reference ReferenceType="HasComponent" IsForward="false">ns=1;s=Cell/CNC</Reference>
+    </References>
+  </UAMethod>
+</UANodeSet>

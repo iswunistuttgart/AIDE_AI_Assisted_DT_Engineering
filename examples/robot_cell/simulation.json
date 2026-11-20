@@ -1,0 +1,104 @@
+{
+  "methods": {
+    "ns=1;s=Cell/Safety/SetEmergencyStop": [
+      {"node": "ns=1;s=Cell/Safety/EmergencyStopActive", "argument": 0},
+      {"node": "ns=1;s=Cell/CNC/SpindleSpeed", "value": 0, "afterSeconds": 2},
+      {"node": "ns=1;s=Cell/CNC/SpindleTemp", "value": 333.15, "afterSeconds": 20}
+    ],
+    "ns=1;s=Cell/Robot/StopMotion": [
+      {"node": "ns=1;s=Cell/Robot/Moving", "value": false},
+      {"node": "ns=1;s=Cell/Robot/MotorTemp", "value": 55.0, "afterSeconds": 30}
+    ],
+    "ns=1;s=Cell/Robot/ResumeMotion": [
+      {"node": "ns=1;s=Cell/Robot/Moving", "value": true}
+    ],
+    "ns=1;s=Cell/CNC/StartCycle": [
+      {"node": "ns=1;s=Cell/CNC/CycleRunning", "value": true}
+    ]
+  },
+  "writes": {
+    "ns=1;s=Cell/Robot/SpeedOverride": {
+      "50.0": [{"node": "ns=1;s=Cell/Robot/MotorTemp", "value": 65.0, "afterSeconds": 20}]
+    },
+    "ns=1;s=Cell/Conveyor/TargetSpeed": {
+      "30.0": [{"node": "ns=1;s=Cell/CNC/SpindleTemp", "value": 333.15, "afterSeconds": 20}],
+      "60.0": [{"node": "ns=1;s=Cell/CNC/SpindleTemp", "value": 338.15, "afterSeconds": 20}]
+    },
+    "ns=1;s=Cell/Conveyor/RunCommand": {
+      "0": [{"node": "ns=1;s=Cell/Conveyor/MotorCurrent", "value": 0.2, "afterSeconds": 2}],
+      "1": [{"node": "ns=1;s=Cell/Conveyor/MotorCurrent", "value": 2.1, "afterSeconds": 2}]
+    }
+  },
+  "noise": {
+    "periodSeconds": 10,
+    "nodes": {
+      "ns=1;s=Cell/CNC/SpindleTemp": 0.4,
+      "ns=1;s=Cell/CNC/SpindleSpeed": 60,
+      "ns=1;s=Cell/Robot/MotorTemp": 0.3,
+      "ns=1;s=Cell/Robot/CycleTime": 300,
+      "ns=1;s=Cell/Robot/GripForce": 1.5,
+      "ns=1;s=Cell/Conveyor/MotorCurrent": 0.08,
+      "ns=1;s=Cell/Coolant/Temperature": 0.2,
+      "ns=1;s=Cell/Coolant/Pressure": 0.05,
+      "ns=1;s=Cell/Power/PowerL1": 0.1,
+      "ns=1;s=Cell/Power/PowerL2": 0.1,
+      "ns=1;s=Cell/Power/PowerL3": 0.1
+    }
+  },
+  "scenarios": {
+    "nominal": {
+      "description": "Noise only; no watchdog reacts.",
+      "steps": []
+    },
+    "spindle-spike": {
+      "description": "SpindleOverheat: the spindle reaches 85 °C for 10 s only, so the watchdog ends after the 30 s check.",
+      "steps": [
+        {"atSeconds": 10, "node": "ns=1;s=Cell/CNC/SpindleTemp", "value": 358.15},
+        {"atSeconds": 20, "node": "ns=1;s=Cell/CNC/SpindleTemp", "value": 318.15}
+      ]
+    },
+    "spindle-hot": {
+      "description": "SpindleOverheat: 88 °C; the threshold table sets 60 mm/s and the spindle cools down to 65 °C.",
+      "steps": [{"atSeconds": 10, "node": "ns=1;s=Cell/CNC/SpindleTemp", "value": 361.15}]
+    },
+    "spindle-very-hot": {
+      "description": "SpindleOverheat: 98 °C; the threshold table sets 30 mm/s and the spindle cools down to 60 °C.",
+      "steps": [{"atSeconds": 10, "node": "ns=1;s=Cell/CNC/SpindleTemp", "value": 371.15}]
+    },
+    "spindle-stays-warm": {
+      "description": "SpindleOverheat: 82 °C; 90 mm/s does not help, so after two minutes the operator is asked (Camunda Tasklist). Without an answer within one minute, the emergency stop follows.",
+      "steps": [{"atSeconds": 10, "node": "ns=1;s=Cell/CNC/SpindleTemp", "value": 355.15}]
+    },
+    "conveyor-short-peak": {
+      "description": "ConveyorJam: 9.5 A for 2 s only, so the watchdog ends after the 5 s check.",
+      "steps": [
+        {"atSeconds": 10, "node": "ns=1;s=Cell/Conveyor/MotorCurrent", "value": 9.5},
+        {"atSeconds": 12, "node": "ns=1;s=Cell/Conveyor/MotorCurrent", "value": 2.1}
+      ]
+    },
+    "conveyor-jam-cleared": {
+      "description": "ConveyorJam and RobotWaits: the conveyor stops, the robot slows to 10 %; 60 s later the conveyor runs again and the robot returns to 100 %.",
+      "steps": [
+        {"atSeconds": 10, "node": "ns=1;s=Cell/Conveyor/MotorCurrent", "value": 9.5},
+        {"atSeconds": 80, "node": "ns=1;s=Cell/Conveyor/MotorCurrent", "value": 2.1}
+      ]
+    },
+    "conveyor-stays-stopped": {
+      "description": "ConveyorJam and RobotWaits: the conveyor stops and does not run again; after five minutes the operator is asked whether to stop the robot.",
+      "steps": [{"atSeconds": 10, "node": "ns=1;s=Cell/Conveyor/MotorCurrent", "value": 9.5}]
+    },
+    "conveyor-jam-not-cleared": {
+      "description": "ConveyorJam: the current stays at 9.5 A although the conveyor is stopped, so the watchdog escalates.",
+      "ignoreEffects": true,
+      "steps": [{"atSeconds": 10, "node": "ns=1;s=Cell/Conveyor/MotorCurrent", "value": 9.5}]
+    },
+    "axis-warm": {
+      "description": "AxisOverheat: the robot motor reaches 85 °C; the next minute check sets the override to 50 % and the motor cools down.",
+      "steps": [{"atSeconds": 10, "node": "ns=1;s=Cell/Robot/MotorTemp", "value": 85.0}]
+    },
+    "axis-hot": {
+      "description": "AxisOverheat: the robot motor reaches 95 °C; the minute check sets 50 % and also asks the operator whether to stop the robot.",
+      "steps": [{"atSeconds": 10, "node": "ns=1;s=Cell/Robot/MotorTemp", "value": 95.0}]
+    }
+  }
+}

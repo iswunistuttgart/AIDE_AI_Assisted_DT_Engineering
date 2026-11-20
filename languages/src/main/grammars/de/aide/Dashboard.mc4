@@ -1,0 +1,41 @@
+package de.aide;
+
+/* Dashboard of the deployed digital twin: views of cards from the card catalogue. */
+grammar Dashboard extends de.aide.DTBasics {
+
+  DashboardSpec = "dashboard" Name "uses" binding:Name "{" Item* "}";
+
+  interface Item;
+
+  View implements Item = "view" title:StringLiteral "{" Card* "}";
+
+  interface Card;
+
+  /* Bound attributes that the dashboard deliberately does not show. */
+  Hide implements Item, Card = "hide" (AttributeRef || ",")+ ";";
+
+  /* Severity: the value from which the gauge shows a warning, and a critical value. */
+  Gauge implements Card = "gauge" AttributeRef "min" min:SignedLiteral "max" max:SignedLiteral
+    ("severity" warning:SignedLiteral "," critical:SignedLiteral)? ";";
+
+  History implements Card = "history" (AttributeRef || ",")+ "over" period:NatLiteral TimeUnit ";";
+
+  Tile implements Card = "tile" AttributeRef ";";
+
+  Toggle implements Card = "toggle" AttributeRef ";";
+
+  /* Controls. A control that calls a method asks the operator to confirm. */
+  Button implements Card = "button" AttributeRef ("confirm" question:StringLiteral)? Visibility? ";";
+
+  /* Range: the values the operator may enter, for example the cells 1 to 9 of a board. */
+  Input implements Card = "input" AttributeRef ("min" min:SignedLiteral "max" max:SignedLiteral)?
+    ("confirm" question:StringLiteral)? Visibility? ";";
+
+  /* Shows the control only while a bound value equals the literal. */
+  Visibility = "when" AttributeRef "==" value:SignedLiteral;
+
+  /* Shows the watchdog workflow while it reacts to a deviation. */
+  Alarm implements Card = "alarm" workflow:Name ";";
+
+  enum TimeUnit = S:"s" | MIN:"min" | H:"h";
+}

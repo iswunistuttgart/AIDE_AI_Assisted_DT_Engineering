@@ -1,0 +1,31 @@
+dashboard CellDashboard uses CellMonitoringBinding {
+  view "Robot" {
+    gauge motorTemperature min 20 max 100 severity 70, 80;
+    history motorTemperature, speedOverride over 1 h;
+    tile cycleTime;
+    tile speedOverride;
+    alarm AxisOverheat;
+    alarm RobotWaits;
+    button stopMotion confirm "Stop the robot motion?";
+    button resumeMotion confirm "Resume the robot motion?";
+  }
+  view "CNC machine" {
+    gauge spindleTemperature min 20 max 120 severity 70, 80;
+    history spindleTemperature, targetSpeed over 1 h;
+    tile spindleSpeed;
+    alarm SpindleOverheat;
+    button startCycle confirm "Start the machining cycle?";
+    toggle coolantOn;
+  }
+  view "Conveyor" {
+    gauge motorCurrent min 0 max 10 severity 1, 8;
+    history motorCurrent over 10 min;
+    tile targetSpeed;
+    toggle run;
+    alarm ConveyorJam;
+  }
+  view "Safety" {
+    button emergencyStop confirm "Trigger the emergency stop?";
+  }
+  hide currentPose.x, currentPose.y, currentPose.z;
+}

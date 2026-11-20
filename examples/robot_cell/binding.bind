@@ -1,0 +1,20 @@
+binding CellMonitoringBinding for CellMonitoring, RobotCellNodeSet {
+  CncMachine.spindleTemperature -> "ns=1;s=Cell/CNC/SpindleTemp" convert K to degC;
+  CncMachine.spindleSpeed -> "ns=1;s=Cell/CNC/SpindleSpeed" widen Int32 to double;
+  CncMachine.startCycle -> "ns=1;s=Cell/CNC/StartCycle" map true -> call confirmed;
+  CncMachine.coolantOn -> "ns=1;s=Cell/Coolant/PumpCommand" map true -> 1, false -> 0 confirmed;
+  Robot.cycleTime -> "ns=1;s=Cell/Robot/CycleTime" convert ms to s;
+  Robot.batteryLevel unbound "only available through getter method (not supported): Cell/Robot/GetBatteryLevel";
+  Robot.currentPose.x -> "ns=1;s=Cell/Robot/Pose/X";
+  Robot.currentPose.y -> "ns=1;s=Cell/Robot/Pose/Y";
+  Robot.currentPose.z -> "ns=1;s=Cell/Robot/Pose/Z";
+  Robot.speedOverride -> "ns=1;s=Cell/Robot/SpeedOverride";
+  Robot.stopMotion -> "ns=1;s=Cell/Robot/StopMotion" map true -> call confirmed;
+  Robot.resumeMotion -> "ns=1;s=Cell/Robot/ResumeMotion" map true -> call confirmed;
+  Conveyor.motorCurrent -> "ns=1;s=Cell/Conveyor/MotorCurrent";
+  Conveyor.targetSpeed -> "ns=1;s=Cell/Conveyor/TargetSpeed";
+  Conveyor.run -> "ns=1;s=Cell/Conveyor/RunCommand" map true -> 1, false -> 0 confirmed;
+  SafetyController.emergencyStop -> "ns=1;s=Cell/Safety/SetEmergencyStop" via method;
+  Cell.totalPower unbound "only available as the sum of the phases PowerL1, PowerL2 and PowerL3 (not supported)";
+  AxisOverheat.motorTemperature -> "ns=1;s=Cell/Robot/MotorTemp";
+}

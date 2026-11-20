@@ -1,0 +1,102 @@
+package de.aide;
+
+/* Watchdog workflows: a BPMN graph in a compact textual notation. Every element
+   names its successors; the elements form the catalogue that the LLM may use. */
+grammar WatchdogWorkflow extends de.aide.DTBasics {
+
+  WorkflowSpec = (Workflow | OpenRule)+;
+
+  /* A fault rule that cannot be implemented because it needs attributes that the engineer
+     marked as unbound; it stays an open case for the engineer instead of a workflow. */
+  OpenRule = "openrule" NatLiteral "needs" (AttributeRef || ",")+ ";";
+
+  /* covers lists the numbers of the fault rules that the workflow handles. A
+     workflow that only other workflows call may omit it. */
+  Workflow = "workflow" Name "uses" binding:Name ("covers" (NatLiteral || ",")+)? "{"
+    WorkflowRequirement* Element* "}";
+
+  /* A signal that the watchdog needs but the service requirements lack, in the attribute
+     notation of the service requirements. The tool binds it like a service attribute. */
+  WorkflowRequirement = "requires" type:Name Name ("in" UnitRef)? ReadOnly? ";";
+
+  interface Element;
+
+  /* Start event: a message on a value change of the trigger attributes, a timer
+     cycle, a signal, or none for a workflow that a call activity starts. */
+  StartElement implements Element = "start" Name StartTrigger? "->" next:Name;
+
+  interface StartTrigger;
+  ChangeTrigger implements StartTrigger = "on" "change" (AttributeRef || ",")+;
+  CycleTrigger implements StartTrigger = "every" Duration;
+  SignalTrigger implements StartTrigger = "on" "signal" signal:StringLiteral;
+
+  /* Intermediate timer event. */
+  TimerElement implements Element = "timer" Name Duration "->" next:Name;
+
+  /* Intermediate signal throw event: informs other workflows. */
+  SignalElement implements Element = "signal" Name signal:StringLiteral "->" next:Name;
+
+  /* Exclusive gateway. */
+  XorElement implements Element = "xor" Name Expression "?" yes:Name ":" no:Name;
+
+  /* Inclusive gateway: a split follows every branch whose condition holds, or the
+     default branch; a join waits for all branches that were started. */
+  InclusiveSplitElement implements Element = "inclusive" Name (Branch || ",")+ ":" fallback:Name;
+  InclusiveJoinElement implements Element = "inclusive" Name "->" next:Name;
+  Branch = Expression "?" next:Name;
+
+  /* Event-based gateway: a condition becomes true or a signal arrives, or the
+     deadline expires. */
+  EventGatewayElement implements Element =
+    "eventgw" Name WaitTrigger "?" met:Name ":" "after" Duration deadline:Name;
+
+  interface WaitTrigger;
+  ConditionTrigger implements WaitTrigger = Expression;
+  SignalWait implements WaitTrigger = "signal" signal:StringLiteral;
+
+  /* Parallel gateway: splits into or joins branches. */
+  ParallelElement implements Element = "parallel" Name "->" next:Name ("," next:Name)*;
+
+  /* Service task that writes one bound attribute. */
+  TaskElement implements Element = "task" Name Assignment "->" next:Name;
+
+  /* Business rule task: a threshold table derives the value of a writable attribute
+     from a readable value; the first matching row wins. */
+  DecideElement implements Element =
+    "decide" Name "set" target:AttributeRef "from" input:AttributeRef "{" Row* "else" otherwise:SignedLiteral "}"
+    "->" next:Name;
+  Row = CompOp limit:SignedLiteral ":" value:SignedLiteral ";";
+
+  /* User task that asks the operator a yes/no question. Boundary events interrupt it. */
+  UserElement implements Element =
+    "user" Name question:StringLiteral "yes" yes:Name ":" "no" no:Name Boundary*;
+
+  /* Call activity: runs another workflow of the specification and waits for its end. */
+  CallElement implements Element = "call" Name workflow:Name Boundary* "->" next:Name;
+
+  interface Boundary;
+  TimerBoundary implements Boundary = "after" Duration "->" next:Name;
+  ConditionBoundary implements Boundary = "when" Expression "->" next:Name;
+  SignalBoundary implements Boundary = "on" "signal" signal:StringLiteral "->" next:Name;
+
+  /* Escalation end event: informs the responsible person. */
+  EscalateElement implements Element = "escalate" Name message:StringLiteral;
+
+  /* Terminate end event: ends all branches of the workflow. */
+  TerminateElement implements Element = "terminate" Name;
+
+  /* None end event. */
+  EndElement implements Element = "end" Name;
+
+  Assignment = "set" AttributeRef "=" SignedLiteral;
+
+  Duration = NatLiteral unit:Name;
+
+  Expression = (Conjunction || "or")+;
+
+  Conjunction = (Comparison || "and")+;
+
+  Comparison = AttributeRef CompOp SignedLiteral;
+
+  enum CompOp = GT:">" | GE:">=" | LT:"<" | LE:"<=" | EQ:"==" | NE:"!=";
+}

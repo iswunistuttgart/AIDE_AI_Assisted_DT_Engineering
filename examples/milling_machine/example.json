@@ -1,0 +1,6 @@
+{
+  "order": 2,
+  "title": "5-axis milling machine (umati)",
+  "nodeset": "milling-machine.nodeset.xml",
+  "endpoint": "opc.tcp://opcua-milling-machine:4840/milling-machine/"
+}

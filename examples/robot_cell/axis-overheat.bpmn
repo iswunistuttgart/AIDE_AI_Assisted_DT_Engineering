@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:zeebe="http://camunda.org/schema/zeebe/1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" id="Definitions_Watchdog_AxisOverheat" targetNamespace="urn:aide:watchdog">
+  <bpmn:process id="Watchdog_AxisOverheat" name="Watchdog AxisOverheat" isExecutable="true">
+    <bpmn:startEvent id="s" name="every 60 s"><bpmn:outgoing>Flow_1</bpmn:outgoing><bpmn:timerEventDefinition><bpmn:timeCycle xsi:type="bpmn:tFormalExpression">R/PT60S</bpmn:timeCycle></bpmn:timerEventDefinition></bpmn:startEvent>
+    <bpmn:serviceTask id="g1_read" name="read current values"><bpmn:extensionElements><zeebe:taskDefinition type="watchdog-read" /><zeebe:taskHeaders><zeebe:header key="attributes" value="AxisOverheat.motorTemperature" /></zeebe:taskHeaders></bpmn:extensionElements><bpmn:incoming>Flow_1</bpmn:incoming><bpmn:outgoing>Flow_2</bpmn:outgoing></bpmn:serviceTask>
+    <bpmn:inclusiveGateway id="g1" default="Flow_5"><bpmn:incoming>Flow_2</bpmn:incoming><bpmn:outgoing>Flow_3</bpmn:outgoing><bpmn:outgoing>Flow_4</bpmn:outgoing><bpmn:outgoing>Flow_5</bpmn:outgoing></bpmn:inclusiveGateway>
+    <bpmn:serviceTask id="slow" name="set Robot.speedOverride = 50"><bpmn:extensionElements><zeebe:taskDefinition type="opcua-write" /><zeebe:taskHeaders><zeebe:header key="attribute" value="Robot.speedOverride" /><zeebe:header key="value" value="50" /><zeebe:header key="binding" value="ns=1;s=Cell/Robot/SpeedOverride" /></zeebe:taskHeaders></bpmn:extensionElements><bpmn:incoming>Flow_3</bpmn:incoming><bpmn:outgoing>Flow_6</bpmn:outgoing></bpmn:serviceTask>
+    <bpmn:userTask id="ask" name="Robot motor above 90 °C. Stop the robot motion?"><bpmn:extensionElements><zeebe:userTask /><zeebe:formDefinition formId="Watchdog_AxisOverheat_ask" /></bpmn:extensionElements><bpmn:incoming>Flow_4</bpmn:incoming><bpmn:outgoing>Flow_7</bpmn:outgoing></bpmn:userTask>
+    <bpmn:exclusiveGateway id="ask_answer" name="answer?" default="Flow_9"><bpmn:incoming>Flow_7</bpmn:incoming><bpmn:outgoing>Flow_8</bpmn:outgoing><bpmn:outgoing>Flow_9</bpmn:outgoing></bpmn:exclusiveGateway>
+    <bpmn:boundaryEvent id="ask_boundary1" name="after 60 s" attachedToRef="ask" cancelActivity="true"><bpmn:outgoing>Flow_10</bpmn:outgoing><bpmn:timerEventDefinition><bpmn:timeDuration xsi:type="bpmn:tFormalExpression">PT60S</bpmn:timeDuration></bpmn:timerEventDefinition></bpmn:boundaryEvent>
+    <bpmn:serviceTask id="stop" name="set Robot.stopMotion = true"><bpmn:extensionElements><zeebe:taskDefinition type="opcua-write" /><zeebe:taskHeaders><zeebe:header key="attribute" value="Robot.stopMotion" /><zeebe:header key="value" value="true" /><zeebe:header key="binding" value="ns=1;s=Cell/Robot/StopMotion" /></zeebe:taskHeaders></bpmn:extensionElements><bpmn:incoming>Flow_8</bpmn:incoming><bpmn:outgoing>Flow_11</bpmn:outgoing></bpmn:serviceTask>
+    <bpmn:inclusiveGateway id="join"><bpmn:incoming>Flow_5</bpmn:incoming><bpmn:incoming>Flow_6</bpmn:incoming><bpmn:incoming>Flow_9</bpmn:incoming><bpmn:incoming>Flow_10</bpmn:incoming><bpmn:incoming>Flow_11</bpmn:incoming><bpmn:outgoing>Flow_12</bpmn:outgoing></bpmn:inclusiveGateway>
+    <bpmn:endEvent id="done" name="done"><bpmn:incoming>Flow_12</bpmn:incoming></bpmn:endEvent>
+    <bpmn:sequenceFlow id="Flow_1" sourceRef="s" targetRef="g1_read" />
+    <bpmn:sequenceFlow id="Flow_2" sourceRef="g1_read" targetRef="g1" />
+    <bpmn:sequenceFlow id="Flow_3" sourceRef="g1" targetRef="slow" name="AxisOverheat.motorTemperature &gt; 80"><bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">=((AxisOverheat_motorTemperature != null and AxisOverheat_motorTemperature &gt; 80))</bpmn:conditionExpression></bpmn:sequenceFlow>
+    <bpmn:sequenceFlow id="Flow_4" sourceRef="g1" targetRef="ask" name="AxisOverheat.motorTemperature &gt; 90"><bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">=((AxisOverheat_motorTemperature != null and AxisOverheat_motorTemperature &gt; 90))</bpmn:conditionExpression></bpmn:sequenceFlow>
+    <bpmn:sequenceFlow id="Flow_5" sourceRef="g1" targetRef="join" name="otherwise" />
+    <bpmn:sequenceFlow id="Flow_6" sourceRef="slow" targetRef="join" />
+    <bpmn:sequenceFlow id="Flow_7" sourceRef="ask" targetRef="ask_answer" />
+    <bpmn:sequenceFlow id="Flow_8" sourceRef="ask_answer" targetRef="stop" name="yes"><bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">=answer_ask = &quot;yes&quot;</bpmn:conditionExpression></bpmn:sequenceFlow>
+    <bpmn:sequenceFlow id="Flow_9" sourceRef="ask_answer" targetRef="join" name="no" />
+    <bpmn:sequenceFlow id="Flow_10" sourceRef="ask_boundary1" targetRef="join" />
+    <bpmn:sequenceFlow id="Flow_11" sourceRef="stop" targetRef="join" />
+    <bpmn:sequenceFlow id="Flow_12" sourceRef="join" targetRef="done" />
+  </bpmn:process>
+  <bpmndi:BPMNDiagram id="Diagram_Watchdog_AxisOverheat">
+    <bpmndi:BPMNPlane id="Plane_Watchdog_AxisOverheat" bpmnElement="Watchdog_AxisOverheat">
+      <bpmndi:BPMNShape id="s_di" bpmnElement="s"><dc:Bounds x="132" y="132" width="36" height="36" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="g1_read_di" bpmnElement="g1_read"><dc:Bounds x="250" y="110" width="100" height="80" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="g1_di" bpmnElement="g1"><dc:Bounds x="425" y="125" width="50" height="50" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="slow_di" bpmnElement="slow"><dc:Bounds x="550" y="110" width="100" height="80" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="ask_di" bpmnElement="ask"><dc:Bounds x="550" y="250" width="100" height="80" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="ask_answer_di" bpmnElement="ask_answer"><dc:Bounds x="725" y="125" width="50" height="50" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="ask_boundary1_di" bpmnElement="ask_boundary1"><dc:Bounds x="614" y="312" width="36" height="36" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="stop_di" bpmnElement="stop"><dc:Bounds x="850" y="110" width="100" height="80" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="join_di" bpmnElement="join"><dc:Bounds x="575" y="405" width="50" height="50" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="done_di" bpmnElement="done"><dc:Bounds x="732" y="272" width="36" height="36" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Flow_1_di" bpmnElement="Flow_1"><di:waypoint x="168" y="150" /><di:waypoint x="250" y="150" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_2_di" bpmnElement="Flow_2"><di:waypoint x="350" y="150" /><di:waypoint x="425" y="150" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_3_di" bpmnElement="Flow_3"><di:waypoint x="475" y="150" /><di:waypoint x="550" y="150" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_4_di" bpmnElement="Flow_4"><di:waypoint x="450" y="175" /><di:waypoint x="450" y="290" /><di:waypoint x="550" y="290" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_5_di" bpmnElement="Flow_5"><di:waypoint x="450" y="175" /><di:waypoint x="450" y="430" /><di:waypoint x="575" y="430" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_6_di" bpmnElement="Flow_6"><di:waypoint x="600" y="190" /><di:waypoint x="600" y="485" /><di:waypoint x="600" y="485" /><di:waypoint x="600" y="455" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_7_di" bpmnElement="Flow_7"><di:waypoint x="600" y="250" /><di:waypoint x="600" y="150" /><di:waypoint x="725" y="150" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_8_di" bpmnElement="Flow_8"><di:waypoint x="775" y="150" /><di:waypoint x="850" y="150" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_9_di" bpmnElement="Flow_9"><di:waypoint x="750" y="175" /><di:waypoint x="750" y="485" /><di:waypoint x="600" y="485" /><di:waypoint x="600" y="455" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_10_di" bpmnElement="Flow_10"><di:waypoint x="632" y="348" /><di:waypoint x="632" y="430" /><di:waypoint x="625" y="430" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_11_di" bpmnElement="Flow_11"><di:waypoint x="900" y="190" /><di:waypoint x="900" y="485" /><di:waypoint x="600" y="485" /><di:waypoint x="600" y="455" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_12_di" bpmnElement="Flow_12"><di:waypoint x="600" y="405" /><di:waypoint x="600" y="290" /><di:waypoint x="732" y="290" /></bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>
